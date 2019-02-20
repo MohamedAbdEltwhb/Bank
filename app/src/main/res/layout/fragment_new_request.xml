@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.homeCycle.home.NewRequestFragment">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimens_xl">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/New_request_F_TiL_Name"
+                style="@style/AppTextInputLayoutStyle">
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_name"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/New_request_F_TiL_Age"
+                style="@style/AppTextInputLayoutStyle">
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/your_age_hint"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/New_request_F_Blood_Type"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_et"
+                android:layout_height="45dp"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:singleLine="true" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/New_request_F_TiL_Number_bags"
+                style="@style/AppTextInputLayoutStyle">
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/number_of_bags"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/New_request_F_hospital_name"
+                style="@style/AppTextInputLayoutStyle">
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/hospital_name"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/New_request_ET_Location_text"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/shape_et"
+                    android:hint="@string/hospital_location"
+                    android:paddingStart="8dp"
+                    android:textColorHint="@color/HintColor"
+                    android:paddingEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/New_request_FL_Location_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <FrameLayout
+                    android:id="@+id/New_request_FL_Location_icon"
+                    android:layout_width="45dp"
+                    android:layout_height="@dimen/album_dp_45"
+                    android:background="@drawable/shape_et"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_location" />
+                </FrameLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <Spinner
+                android:id="@+id/New_request_F_Spinner_Cities"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_et"
+                android:layout_height="45dp"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:singleLine="true" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Forget_password1_Fragment_TiL_Password"
+                style="@style/AppTextInputLayoutStyle">
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/New_request_F_TiL_Phone"
+                style="@style/AppTextInputLayoutStyle">
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_phone"
+                    android:inputType="phone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/New_request_F_TiL_Notes"
+                style="@style/AppTextInputLayoutStyle">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_height="@dimen/dim_13xl"
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/notes"
+                    android:gravity="top"
+                    android:paddingTop="@dimen/dimens_m"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/Register_fragment_Sign_up_btn"
+                style="@style/AppButtonStyle"
+                android:layout_marginTop="@dimen/dimens_m"
+                android:background="@color/grayColor"
+                android:text="@string/send_request" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

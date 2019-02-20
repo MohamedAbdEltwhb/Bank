@@ -1,0 +1,127 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- HomeFragment TabLayout Style -->
+    <style name="AppTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/whiteColor</item>
+        <item name="tabIndicatorHeight">0dp</item>
+        <item name="tabPaddingStart">@dimen/dimens_s</item>
+        <item name="tabPaddingEnd">@dimen/dimens_s</item>
+        <item name="tabBackground">@drawable/tab_color_selector</item>
+        <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
+        <item name="tabSelectedTextColor">@color/whiteColor</item>
+    </style>
+
+    <!-- For HomeFragment TabLayout Text Title  -->
+    <style name="AppTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/txt_size_s</item>
+        <item name="android:textColor">@color/grayColor</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+
+    <style name="SportsDetailTitle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
+    </style>
+
+    <style name="DetailText" parent="TextAppearance.AppCompat.Subhead" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/txt_size_m</item>
+    </style>
+    <style name="Title" parent="TextAppearance.AppCompat.Headline"/>
+
+    <!-- Style For All Buttons -->
+    <style name="AppButtonStyle">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_marginEnd">@dimen/dimens_l</item>
+        <item name="android:layout_marginStart">@dimen/dimens_l</item>
+        <item name="android:textColor">@color/whiteColor</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+
+    <!-- Style For (LoginFragment & ForgetPasswordStep1 & ForgetPasswordStep2) Logo  -->
+    <style name="AppLogoStyle">
+        <item name="android:layout_width">@dimen/dim_13xl</item>
+        <item name="android:layout_height">@dimen/dim_13xl</item>
+        <item name="android:layout_marginTop">@dimen/dim_5xl</item>
+        <item name="android:src">@drawable/ic_app_logo</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <!-- Style For All TextInputLayout -->
+    <style name="AppTextInputLayoutStyle" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">@color/HintColor</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">@color/HintColor</item>
+        <item name="colorControlActivated">@color/HintColor</item>
+
+        <item name="android:textColorHighlight">#679</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/dimens_l</item>
+        <item name="android:layout_marginStart">@dimen/dimens_l</item>
+    </style>
+
+    <!-- Style For All TextInputEditText -->
+    <style name="AppTextInputEditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimens_xxxxl</item>
+        <item name="android:background">@drawable/shape_et</item>
+        <item name="android:paddingStart">@dimen/dimens_m</item>
+        <item name="android:paddingEnd">@dimen/dimens_m</item>
+    </style>
+
+    <style name="FABStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:src">@drawable/ic_add</item>
+        <item name="android:layout_margin">@dimen/dimens_l</item>
+    </style>
+
+    <style name="LineOrderRequestInformationStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimens_sss</item>
+        <item name="android:layout_marginTop">@dimen/dimens_l</item>
+        <item name="android:background">@color/LightGrayColor</item>
+        <item name="android:layout_marginEnd">@dimen/dimens_m</item>
+        <item name="android:layout_marginStart">@dimen/dimens_m</item>
+    </style>
+
+    <style name="OrderRequestInformationTextView1Style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/dimens_l</item>
+        <item name="android:textColor">@color/GreyDeep</item>
+        <item name="android:layout_marginTop">@dimen/dimens_l</item>
+        <item name="android:textSize">@dimen/txt_size_l</item>
+    </style>
+
+    <style name="OrderRequestInformationTextView2Style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/dimens_l</item>
+        <item name="android:textColor">@color/GreyDeep</item>
+        <item name="android:textSize">@dimen/txt_size_l</item>
+        <item name="android:paddingEnd">@dimen/dimens_s</item>
+        <item name="android:paddingStart">@dimen/dimens_s</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/LightGrayColor"
+    tools:context=".ui.fragments.homeCycle.home.PostsDetailsFragment">
+
+    <ImageView
+        android:id="@+id/Posts_Details_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/album_dp_200"
+        android:layout_marginEnd="@dimen/dimens_l"
+        android:layout_marginStart="@dimen/dimens_l"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/dimens_l"
+        android:layout_marginStart="@dimen/dimens_l"
+        android:layout_marginTop="@dimen/dimens_l"
+        android:background="@drawable/shape_et"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Posts_Details_ImageView"
+        app:layout_constraintVertical_bias="1.0">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/Posts_Details_IV_Like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:background="@drawable/posts_like_btn"
+                android:padding="@dimen/dimens_m"
+                android:src="@drawable/ic_like_a"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/Posts_Details_TV_Title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/dimens_m"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:gravity="center_vertical"
+                android:text="@string/the_way_of_disease_prevention"
+                android:textColor="@color/GreyDeep"
+                android:textSize="@dimen/m2"
+                app:layout_constraintBottom_toBottomOf="@+id/Posts_Details_IV_Like"
+                app:layout_constraintEnd_toStartOf="@+id/Posts_Details_IV_Like"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/Posts_Details_IV_Like" />
+
+
+            <FrameLayout
+                android:id="@+id/Posts_Details_FL_Line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimens_sss"
+                android:layout_marginTop="@dimen/dimens_m"
+                android:background="@color/LightGrayColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Posts_Details_IV_Like" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:paddingTop="@dimen/dimens_m"
+                android:textSize="@dimen/txt_size_m"
+                tools:text="TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextViewTextViewv v TextView v TextView TextView TextViewTextViewv TextViewTextViewv v v v v TextViewTextViewTextViewTextView TextView TextView TextView TextView TextView TextView TextViewTextViewTextView TextView TextView TextView TextView TextView  vTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Posts_Details_FL_Line" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dim_70"
+    android:background="@drawable/shape_et"
+    android:layout_marginTop="@dimen/dimens_m"
+    android:layout_marginEnd="@dimen/dimens_m"
+    android:layout_marginStart="@dimen/dimens_m"
+    android:padding="@dimen/dimens_m">
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="@dimen/dimens_xxxl"
+        android:layout_height="@dimen/dimens_xxxl"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_notification_a"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dimens_l"
+        android:layout_marginStart="@dimen/dimens_s"
+        android:layout_marginTop="@dimen/dimens_l"
+        android:gravity="center_vertical"
+        tools:text=";skmvksnflvnsljfnjlsnfl"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimens_l"
+        android:layout_marginTop="@dimen/dimens_l"
+        tools:text="suterday 22/10/2105"
+        android:textSize="@dimen/txt_size_s"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dimens_ss"
+        android:src="@drawable/ic_schedule"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintEnd_toStartOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+
+
+</android.support.constraint.ConstraintLayout>

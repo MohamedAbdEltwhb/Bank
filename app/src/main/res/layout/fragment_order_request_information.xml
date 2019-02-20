@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.homeCycle.home.OrderRequestInformationFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/frameLayout_line1"
+                style="@style/LineOrderRequestInformationStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Name"
+                style="@style/OrderRequestInformationTextView1Style"
+                android:text="@string/name_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_line1" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Name_value"
+                style="@style/OrderRequestInformationTextView2Style"
+                tools:text="Hospital address: "
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/RequestF_Order_TV_Name"
+                app:layout_constraintTop_toTopOf="@+id/RequestF_Order_TV_Name" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout_line2"
+                style="@style/LineOrderRequestInformationStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_TV_Name_value" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Age"
+                style="@style/OrderRequestInformationTextView1Style"
+                android:text="@string/age_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_line2" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Age_value"
+                style="@style/OrderRequestInformationTextView2Style"
+                tools:text="25"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/RequestF_Order_TV_Age"
+                app:layout_constraintTop_toTopOf="@+id/RequestF_Order_TV_Age" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout_line3"
+                style="@style/LineOrderRequestInformationStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_TV_Age_value" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Blood_type"
+                style="@style/OrderRequestInformationTextView1Style"
+                android:text="@string/blood_type_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_line3" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Blood_type_value"
+                style="@style/OrderRequestInformationTextView2Style"
+                tools:text="O+"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/RequestF_Order_TV_Blood_type"
+                app:layout_constraintTop_toTopOf="@+id/RequestF_Order_TV_Blood_type" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout_line4"
+                style="@style/LineOrderRequestInformationStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_TV_Blood_type_value" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Number_bags"
+                style="@style/OrderRequestInformationTextView1Style"
+                android:text="@string/number_bags_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_line4" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Number_bags_value"
+                style="@style/OrderRequestInformationTextView2Style"
+                tools:text="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/RequestF_Order_TV_Number_bags"
+                app:layout_constraintTop_toTopOf="@+id/RequestF_Order_TV_Number_bags" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout_line5"
+                style="@style/LineOrderRequestInformationStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_TV_Number_bags_value" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_hospital"
+                style="@style/OrderRequestInformationTextView1Style"
+                android:text="@string/hospital_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_line5" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_hospital_value"
+                style="@style/OrderRequestInformationTextView2Style"
+                tools:text="Hospital"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/RequestF_Order_TV_hospital"
+                app:layout_constraintTop_toTopOf="@+id/RequestF_Order_TV_hospital" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout_line6"
+                style="@style/LineOrderRequestInformationStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_TV_hospital_value" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_hospital_address"
+                style="@style/OrderRequestInformationTextView1Style"
+                android:text="@string/hospital_address_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_line6" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_hospital_address_value"
+                style="@style/OrderRequestInformationTextView2Style"
+                tools:text="Hospital"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/RequestF_Order_TV_hospital_address"
+                app:layout_constraintTop_toTopOf="@+id/RequestF_Order_TV_hospital_address" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout_line7"
+                style="@style/LineOrderRequestInformationStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_TV_hospital_address_value" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Phone_number"
+                style="@style/OrderRequestInformationTextView1Style"
+                android:text="@string/phone_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_line7" />
+
+            <TextView
+                android:id="@+id/RequestF_Order_TV_Phone_number_value"
+                style="@style/OrderRequestInformationTextView2Style"
+                tools:text="01110639433"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/RequestF_Order_TV_Phone_number"
+                app:layout_constraintTop_toTopOf="@+id/RequestF_Order_TV_Phone_number" />
+
+            <LinearLayout
+                android:id="@+id/largeLabel_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/dimens_m"
+                android:layout_marginEnd="@dimen/dimens_m"
+                android:background="@drawable/shape_et"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_TV_Phone_number_value">
+
+                <TextView
+                    android:textColor="@color/GreyDeep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimens_m"
+                    android:layout_marginEnd="@dimen/dimens_m"
+                    android:layout_marginTop="@dimen/dimens_m"
+                    android:text="@string/details"
+                    android:textSize="@dimen/txt_size_xl" />
+
+                <TextView
+                    android:id="@+id/RequestF_Order_TV_Details_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="6"
+                    android:layout_marginStart="@dimen/dimens_m"
+                    android:layout_marginEnd="@dimen/dimens_m"
+                    android:layout_marginTop="@dimen/dimens_s"
+                    android:textColor="@color/GreyDeep"
+                    android:textSize="@dimen/txt_size_l"
+                    tools:text="Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details Details"/>
+            </LinearLayout>
+
+            <WebView
+                android:id="@+id/RequestF_Order_WebView_map"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_12xl"
+                android:layout_marginEnd="@dimen/dimens_m"
+                android:layout_marginStart="@dimen/dimens_m"
+                android:layout_marginTop="@dimen/dimens_m"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/largeLabel_details"
+                tools:ignore="WebViewLayout" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimens_xxxxl"
+                android:layout_marginBottom="@dimen/dimens_xl"
+                android:layout_marginEnd="@dimen/dimens_m"
+                android:layout_marginStart="@dimen/dimens_m"
+                android:layout_marginTop="@dimen/dimens_m"
+                android:background="@color/GreenColor"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RequestF_Order_WebView_map">
+
+                <TextView
+                    android:id="@+id/RequestF_Order_Button_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_contact_b"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:text="@string/call"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="@dimen/txt_size_l" />
+
+            </LinearLayout>
+
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

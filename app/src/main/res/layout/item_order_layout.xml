@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/dimens_m">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/dp_6"
+        android:layout_height="wrap_content"
+        android:background="@drawable/order_background">
+
+        <TextView
+            android:id="@+id/order_item_Blood_type_TV"
+            android:layout_width="@dimen/ptm_cir"
+            android:layout_height="@dimen/ptm_cir"
+            android:background="@drawable/order_blood_type"
+            android:gravity="center"
+            android:padding="@dimen/dimens_l"
+            android:text="B+"
+            android:textColor="@color/GreyDeep"
+            android:textSize="@dimen/txt_size22_l"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/Status_Name_TV_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimens_s"
+            android:text="@string/status_name"
+            app:layout_constraintStart_toEndOf="@+id/order_item_Blood_type_TV"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/Hospital_TV_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hospital"
+            app:layout_constraintBottom_toTopOf="@+id/City_Name_TV_text"
+            app:layout_constraintStart_toStartOf="@+id/Status_Name_TV_txt"
+            app:layout_constraintTop_toBottomOf="@+id/Status_Name_TV_txt" />
+
+        <TextView
+            android:id="@+id/City_Name_TV_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/city_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/Hospital_TV_text" />
+
+        <TextView
+            android:id="@+id/order_item_Status_name_TV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_s"
+            tools:text="Adam Adam"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@+id/order_item_Details_Button"
+            app:layout_constraintStart_toEndOf="@+id/Status_Name_TV_txt"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/order_item_Hospital_TV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimens_m"
+            tools:text="Hospital"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintBottom_toTopOf="@+id/order_item_City_TV"
+            app:layout_constraintEnd_toEndOf="@+id/order_item_Status_name_TV"
+            app:layout_constraintStart_toStartOf="@+id/order_item_Status_name_TV"
+            app:layout_constraintTop_toBottomOf="@+id/order_item_Status_name_TV" />
+
+        <TextView
+            android:id="@+id/order_item_City_TV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Ciro "
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/order_item_Hospital_TV"
+            app:layout_constraintStart_toStartOf="@+id/order_item_Hospital_TV" />
+
+
+        <Button
+            android:id="@+id/order_item_Details_Button"
+            android:layout_width="90dp"
+            android:layout_height="34dp"
+            android:background="@color/LightGrayColor"
+            android:paddingBottom="@dimen/dimens_s"
+            android:text="@string/details"
+            android:textSize="@dimen/txt_size_s"
+            android:textAllCaps="false"
+            android:textColor="@color/GreyDeep"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/order_item_Call_Button"
+            android:layout_width="90dp"
+            android:layout_height="34dp"
+            android:background="@color/GreenColor"
+            android:drawableEnd="@drawable/ic_contact_b"
+            android:padding="@dimen/dimens_ss"
+            android:textSize="@dimen/txt_size_s"
+            android:paddingEnd="@dimen/dimens_m"
+            android:paddingStart="@dimen/dimens_m"
+            android:paddingTop="@dimen/dimens_s"
+            android:text="@string/call"
+            android:textColor="@color/whiteColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/order_item_Details_Button"
+            app:layout_constraintStart_toStartOf="@+id/order_item_Details_Button" />
+
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

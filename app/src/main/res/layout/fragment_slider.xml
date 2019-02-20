@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/splash"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.splashCycle.SliderFragment">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/Slider_Fragment_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dimens_s"
+        app:layout_constraintBottom_toTopOf="@+id/Slider_Fragment_btn_skip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/Slider_fragment_Indicator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimens_xxxl"
+        android:layout_marginBottom="@dimen/dimens_m"
+        app:ci_drawable="@drawable/indicator_b"
+        app:ci_drawable_unselected="@drawable/indicator_a"
+        app:layout_constraintBottom_toBottomOf="@+id/Slider_Fragment_viewPager"
+        app:layout_constraintEnd_toEndOf="@+id/Slider_Fragment_viewPager"
+        app:layout_constraintStart_toStartOf="@+id/Slider_Fragment_viewPager" />
+
+    <Button
+        android:id="@+id/Slider_Fragment_btn_skip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimens_s"
+        android:layout_marginEnd="@dimen/dimens_m"
+        android:layout_marginStart="@dimen/dimens_m"
+        android:background="@color/LightGrayColor"
+        android:text="@string/slider_skip_btn"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

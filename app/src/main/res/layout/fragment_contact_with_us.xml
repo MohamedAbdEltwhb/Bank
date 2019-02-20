@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.homeCycle.ContactWithUsFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/Contact_App_logo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dim_11xl"
+                android:layout_marginTop="@dimen/dimens_xl"
+                android:src="@drawable/ic_app_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/Contact_imageView_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:src="@drawable/ic_mobile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_App_logo" />
+
+            <TextView
+                android:id="@+id/Contact_TextView_Mobile_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:text="@string/mobile"
+                android:textSize="@dimen/txt_size_m"
+                app:layout_constraintBottom_toBottomOf="@+id/Contact_imageView_phone_number"
+                app:layout_constraintStart_toEndOf="@+id/Contact_imageView_phone_number"
+                app:layout_constraintTop_toTopOf="@+id/Contact_imageView_phone_number" />
+
+            <TextView
+                android:id="@+id/Contact_TextView_Mobile_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_m"
+                tools:text="01110639433"
+                app:layout_constraintBottom_toBottomOf="@+id/Contact_TextView_Mobile_txt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/Contact_TextView_Mobile_txt"
+                app:layout_constraintTop_toTopOf="@+id/Contact_TextView_Mobile_txt"
+                app:layout_constraintVertical_bias="0.57" />
+
+
+            <ImageView
+                android:id="@+id/Contact_imageView_Emile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_m"
+                android:src="@drawable/ic_contact"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_imageView_phone_number" />
+
+            <TextView
+                android:id="@+id/Contact_TextView_Email_Address_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:text="@string/email_address"
+                android:textSize="@dimen/txt_size_m"
+                app:layout_constraintBottom_toBottomOf="@+id/Contact_imageView_Emile"
+                app:layout_constraintStart_toEndOf="@+id/Contact_imageView_Emile"
+                app:layout_constraintTop_toTopOf="@+id/Contact_imageView_Emile" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_m"
+                tools:text="Mohamed@yahoo.com"
+                app:layout_constraintBottom_toBottomOf="@+id/Contact_TextView_Email_Address_txt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/Contact_TextView_Email_Address_txt"
+                app:layout_constraintTop_toTopOf="@+id/Contact_TextView_Email_Address_txt"
+                app:layout_constraintVertical_bias="0.57" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="8dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_imageView_Emile">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimens_m"
+                    android:src="@drawable/ic_facebook" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimens_m"
+                    android:src="@drawable/ic_twitter" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimens_m"
+                    android:src="@drawable/ic_youtube" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimens_m"
+                    android:src="@drawable/ic_instagram" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimens_m"
+                    android:src="@drawable/ic_whats_app" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimens_m"
+                    android:src="@drawable/ic_google" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Contact_Us_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimens_m"
+                android:textSize="@dimen/txt_size_l"
+                android:padding="@dimen/dimens_m"
+                android:text="@string/contact_us"
+                android:gravity="center"
+                android:textColor="@color/whiteColor"
+                android:background="@color/grayColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Contact_Fragment_TiL_Name"
+                style="@style/AppTextInputLayoutStyle"
+                android:layout_marginTop="@dimen/dimens_m"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_Us_textView">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_name"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Contact_Fragment_TiL_Email"
+                style="@style/AppTextInputLayoutStyle"
+                app:layout_constraintEnd_toEndOf="@+id/Contact_Fragment_TiL_Name"
+                app:layout_constraintStart_toStartOf="@+id/Contact_Fragment_TiL_Name"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_Fragment_TiL_Name">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_email"
+                    android:inputType="textEmailAddress" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Contact_Fragment_TiL_Phone_Number"
+                style="@style/AppTextInputLayoutStyle"
+                app:layout_constraintEnd_toEndOf="@+id/Contact_Fragment_TiL_Email"
+                app:layout_constraintStart_toStartOf="@+id/Contact_Fragment_TiL_Email"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_Fragment_TiL_Email">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_your_birth_date"
+                    android:inputType="date" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Contact_Fragment_TiL_Message_title"
+                style="@style/AppTextInputLayoutStyle"
+                app:layout_constraintEnd_toEndOf="@+id/Contact_Fragment_TiL_Phone_Number"
+                app:layout_constraintStart_toStartOf="@+id/Contact_Fragment_TiL_Phone_Number"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_Fragment_TiL_Phone_Number">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_your_birth_date"
+                    android:inputType="date" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/Contact_Fragment_TiL_Message_Bode"
+                style="@style/AppTextInputLayoutStyle"
+                app:layout_constraintEnd_toEndOf="@+id/Contact_Fragment_TiL_Message_title"
+                app:layout_constraintStart_toStartOf="@+id/Contact_Fragment_TiL_Message_title"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_Fragment_TiL_Message_title">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:layout_height="100dp"
+                    android:gravity="top"
+                    android:paddingTop="8dp"
+                    android:hint="@string/register_input_your_birth_date"
+                    android:inputType="date" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                style="@style/AppButtonStyle"
+                android:layout_marginBottom="32dp"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:background="@color/grayColor"
+                android:text="@string/forget_password_send_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Contact_Fragment_TiL_Message_Bode" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

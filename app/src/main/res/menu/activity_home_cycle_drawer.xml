@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="@string/view_your_profile" />
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_notification"
+            android:title="@string/notification_settings" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_favorites"
+            android:title="@string/favorites" />
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home_page" />
+        <item
+            android:id="@+id/nav_instructions"
+            android:icon="@drawable/ic_instructions"
+            android:title="@string/instructions" />
+
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_contact"
+            android:title="@string/contact_us" />
+        <item
+            android:id="@+id/nav_about_application"
+            android:icon="@drawable/ic_about_application"
+            android:title="@string/about_application" />
+        <item
+            android:id="@+id/nav_evaluation"
+            android:icon="@drawable/ic_evaluation"
+            android:title="@string/app_evaluation" />
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_log_out"
+            android:title="@string/log_out" />
+
+
+    </group>
+
+</menu>
