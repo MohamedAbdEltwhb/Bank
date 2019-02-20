@@ -68,7 +68,7 @@
                 android:singleLine="true"/>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/Login_Fragment_TiL_Last_Blood_Donation"
+                android:id="@+id/Register_Fragment_TiL_Last_Blood_Donation"
                 style="@style/AppTextInputLayoutStyle">
                 <android.support.design.widget.TextInputEditText
                     style="@style/AppTextInputEditTextStyle"
@@ -97,7 +97,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/Login_Fragment_TiL_Phone"
+                android:id="@+id/Register_Fragment_TiL_Phone"
                 style="@style/AppTextInputLayoutStyle">
                 <android.support.design.widget.TextInputEditText
                     style="@style/AppTextInputEditTextStyle"
@@ -106,7 +106,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/Forget_password1_Fragment_TiL_Password"
+                android:id="@+id/Register_Fragment_TiL_Password"
                 style="@style/AppTextInputLayoutStyle">
                 <android.support.design.widget.TextInputEditText
                     style="@style/AppTextInputEditTextStyle"
@@ -115,7 +115,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/Forget_password1_Fragment_TiL_Re_Password"
+                android:id="@+id/Register_Fragment_TiL_Re_Password"
                 style="@style/AppTextInputLayoutStyle">
                 <android.support.design.widget.TextInputEditText
                     style="@style/AppTextInputEditTextStyle"
