@@ -44,10 +44,7 @@ public class OrdersFragment extends Fragment implements AdapterView.OnItemSelect
 
         if (HelperMethod.setSpinnerBloodType(getActivity(), orderCustomSpinnerBloodType)){
             orderCustomSpinnerBloodType.setOnItemSelectedListener(this);
-        }if (HelperMethod.setSpinnerCities(getActivity(), orderCustomSpinnerCities)){
-            orderCustomSpinnerCities.setOnItemSelectedListener(this);
         }
-
         return view;
     }
 

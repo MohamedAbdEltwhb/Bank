@@ -3,15 +3,11 @@ package com.example.mm.bank.helper;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.mm.bank.ui.custom.CustomSpinnerAdapter;
-import com.example.mm.bank.ui.custom.CustomSpinnerItem;
+import com.example.mm.bank.adapter.spinner.CustomSpinnerAdapter;
 import com.example.mm.bank.ui.custom.CustomSpinnerItemsData;
-
-import java.util.ArrayList;
 
 public class HelperMethod {
 
@@ -28,18 +24,10 @@ public class HelperMethod {
         }
     }
 
-    public static Boolean setSpinnerCities(Context cities, Spinner spinner){
-        CustomSpinnerAdapter Adapter = new CustomSpinnerAdapter(cities
-                , CustomSpinnerItemsData.getmCustomListCities());
-        if (spinner != null) {
-            spinner.setAdapter(Adapter);
-            return true;
-        }
-        return false;
-    }
 
-    public static Boolean setSpinnerBloodType(Context cities, Spinner spinner){
-        CustomSpinnerAdapter Adapter = new CustomSpinnerAdapter(cities,
+
+    public static Boolean setSpinnerBloodType(Context context, Spinner spinner){
+        CustomSpinnerAdapter Adapter = new CustomSpinnerAdapter(context,
                 CustomSpinnerItemsData.getmCustomListBloodType());
         if (spinner != null) {
             spinner.setAdapter(Adapter);

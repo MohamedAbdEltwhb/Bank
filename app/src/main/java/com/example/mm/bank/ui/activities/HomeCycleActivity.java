@@ -106,6 +106,7 @@ public class HomeCycleActivity extends AppCompatActivity
                         null,
                         null);
                 break;
+
             case R.id.nav_notification:
                 HelperMethod.replaceFragments(
                         new SettingsNotificationFragment(),

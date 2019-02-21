@@ -18,6 +18,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.example.mm.bank.helper.Constant.ORDERS_FRAGMENT_TITLE;
+import static com.example.mm.bank.helper.Constant.POSTS_FRAGMENT_TITLE;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -57,8 +60,8 @@ public class HomeFragment extends Fragment {
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         HomeFragmentAdapter adapter = new HomeFragmentAdapter(getChildFragmentManager());
-        adapter.addFragment(new OrdersFragment(), "Orders");
-        adapter.addFragment(new PostsFragment(), "Posts");
+        adapter.addFragment(new OrdersFragment(), ORDERS_FRAGMENT_TITLE);
+        adapter.addFragment(new PostsFragment(), POSTS_FRAGMENT_TITLE);
 
         viewPager.setAdapter(adapter);
     }

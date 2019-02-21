@@ -12,9 +12,7 @@ import android.widget.Toast;
 
 import com.example.mm.bank.R;
 import com.example.mm.bank.helper.HelperMethod;
-import com.example.mm.bank.ui.custom.CustomSpinnerAdapter;
 import com.example.mm.bank.ui.custom.CustomSpinnerItem;
-import com.example.mm.bank.ui.custom.CustomSpinnerItemsData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,9 +48,7 @@ public class NewRequestFragment extends Fragment implements AdapterView.OnItemSe
             NewRequestFTiLBloodType.setOnItemSelectedListener(this);
         }
 
-        if (HelperMethod.setSpinnerCities(getContext(), NewRequestFSpinnerCities)) {
-            NewRequestFSpinnerCities.setOnItemSelectedListener(this);
-        }
+
 
         return view;
     }

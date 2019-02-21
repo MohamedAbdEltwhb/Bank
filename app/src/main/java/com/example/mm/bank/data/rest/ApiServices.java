@@ -1,5 +1,8 @@
 package com.example.mm.bank.data.rest;
 
+import com.example.mm.bank.data.model.cities.Cities;
+import com.example.mm.bank.data.model.governorates.Governorates;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -12,6 +15,14 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiServices {
+
+    @GET("governorates")
+    Call<Governorates> getGovernments();
+
+    @GET("cities")
+    Call<Cities> getCities(@Query("governorate_id") String government_id);
+
+
 
 //    @GET("governorates")
 //    Call<> getGovernorates ();

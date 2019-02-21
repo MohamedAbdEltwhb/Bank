@@ -12,12 +12,12 @@ import com.example.mm.bank.R;
 import com.example.mm.bank.helper.HelperMethod;
 import com.jaeger.library.StatusBarUtil;
 
+import static com.example.mm.bank.helper.Constant.SPLASH_DISPLAY_LENGTH;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SplashFragment extends Fragment {
-
-    private final long SPLASH_DISPLAY_LENGTH = 2000;
 
     public SplashFragment() {
         // Required empty public constructor
@@ -26,7 +26,6 @@ public class SplashFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_splash, container, false);
         //StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.transparentColor));
 

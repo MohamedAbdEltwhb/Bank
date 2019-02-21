@@ -78,7 +78,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
-                android:id="@+id/Register_Fragment_Spinner_Cities"
+                android:id="@+id/Register_Fragment_Spinner_Governments"
                 android:layout_width="match_parent"
                 android:background="@drawable/shape_et"
                 android:layout_height="45dp"
@@ -87,14 +87,15 @@
                 android:layout_marginTop="@dimen/dimens_l"
                 android:singleLine="true"/>
 
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/lll"
-                style="@style/AppTextInputLayoutStyle">
-                <android.support.design.widget.TextInputEditText
-                    style="@style/AppTextInputEditTextStyle"
-                    android:background="@drawable/shape_et" />
-            </android.support.design.widget.TextInputLayout>
+            <Spinner
+                android:id="@+id/Register_Fragment_Spinner_Cities"
+                android:layout_width="match_parent"
+                android:background="@drawable/shape_et"
+                android:layout_height="45dp"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:singleLine="true"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/Register_Fragment_TiL_Phone"
