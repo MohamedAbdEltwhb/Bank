@@ -21,7 +21,7 @@ public interface ApiServices {
     Call<Governorates> getGovernments();
 
     @GET("cities")
-    Call<Cities> getCities(@Query("governorate_id") int government_id);
+    Call<Cities> getCities(@Query("governorate_id") String government_id);
 
     @POST("register")
     @FormUrlEncoded

@@ -1,7 +1,6 @@
 package com.example.mm.bank.ui.fragments.userCycle;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -15,18 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mm.bank.R;
+import com.example.mm.bank.adapter.spinner.SpinnerCitiesAdapter;
+import com.example.mm.bank.adapter.spinner.SpinnerGovernmentsAdapter;
 import com.example.mm.bank.data.model.cities.Cities;
 import com.example.mm.bank.data.model.cities.CitiesData;
 import com.example.mm.bank.data.model.governorates.Governorates;
+import com.example.mm.bank.data.model.governorates.GovernoratesData;
 import com.example.mm.bank.data.rest.ApiServices;
+import com.example.mm.bank.helper.DateInputMask;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
-import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.custom.CustomSpinnerItem;
-import com.example.mm.bank.adapter.spinner.SpinnerCitiesAdapter;
-import com.example.mm.bank.adapter.spinner.SpinnerGovernmentsAdapter;
 
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,33 +40,25 @@ import static com.example.mm.bank.data.rest.RetrofitClient.getClient;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class RegisterFragment extends Fragment {
 
     Unbinder unbinder;
 
-    @BindView(R.id.Register_Fragment_Spinner_Governments)
-    Spinner RegisterFragmentSpinnerGovernments;
-    @BindView(R.id.Register_Fragment_Spinner_Blood_Type)
-    Spinner RegisterFragmentSpinnerBloodType;
-    @BindView(R.id.Register_Fragment_Spinner_Cities)
-    Spinner RegisterFragmentSpinnerCities;
+    @BindView(R.id.Register_Fragment_Spinner_Governments) Spinner RegisterFragmentSpinnerGovernments;
+    @BindView(R.id.Register_Fragment_Spinner_Blood_Type) Spinner RegisterFragmentSpinnerBloodType;
+    @BindView(R.id.Register_Fragment_Spinner_Cities) Spinner RegisterFragmentSpinnerCities;
 
-    @BindView(R.id.Register_Fragment_TiL_Name)
-    TextInputLayout RegisterFragmentTiLName;
-    @BindView(R.id.Register_Fragment_TiL_Email)
-    TextInputLayout RegisterFragmentTiLEmail;
-    @BindView(R.id.Register_Fragment_TiL_BirthDate)
-    TextInputLayout RegisterFragmentTiLBirthDate;
-    @BindView(R.id.Register_Fragment_TiL_Last_Blood_Donation)
-    TextInputLayout RegisterFragmentTiLLastBloodDonation;
-    @BindView(R.id.Register_Fragment_TiL_Phone)
-    TextInputLayout RegisterFragmentTiLPhone;
-    @BindView(R.id.Register_Fragment_TiL_Password)
-    TextInputLayout RegisterFragmentTiLPassword;
-    @BindView(R.id.Register_Fragment_TiL_Re_Password)
-    TextInputLayout RegisterFragmentTiLRePassword;
-    @BindView(R.id.toolbar_text_title)
-    TextView toolbarTextTitle;
+    @BindView(R.id.Register_Fragment_TiL_Name) TextInputLayout RegisterFragmentTiLName;
+    @BindView(R.id.Register_Fragment_TiL_Email) TextInputLayout RegisterFragmentTiLEmail;
+    @BindView(R.id.Register_Fragment_TiL_BirthDate) TextInputLayout RegisterFragmentTiLBirthDate;
+    @BindView(R.id.Register_Fragment_TiL_Last_Blood_Donation) TextInputLayout RegisterFragmentTiLLastBloodDonation;
+    @BindView(R.id.Register_Fragment_TiL_Phone) TextInputLayout RegisterFragmentTiLPhone;
+    @BindView(R.id.Register_Fragment_TiL_Password) TextInputLayout RegisterFragmentTiLPassword;
+    @BindView(R.id.Register_Fragment_TiL_Re_Password) TextInputLayout RegisterFragmentTiLRePassword;
+    @BindView(R.id.toolbar_text_title) TextView toolbarTextTitle;
+
+    private String mCitieId = null;
+    private String mBloodType = null;
 
 
     private ApiServices mApiServices;
@@ -83,54 +74,39 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemSele
         unbinder = ButterKnife.bind(this, view);
 
         toolbarTextTitle.setText(getResources().getString(R.string.register_toolbar_title));
-
-        chickSpinner(RegisterFragmentSpinnerBloodType,
-                HelperMethod.setSpinnerBloodType(getContext(), RegisterFragmentSpinnerBloodType));
-
         mApiServices = getClient().create(ApiServices.class);
-        Call<Governorates> call = mApiServices.getGovernments();
-        call.enqueue(new Callback<Governorates>() {
-            @Override
-            public void onResponse(Call<Governorates> call, Response<Governorates> response) {
 
-                SpinnerGovernmentsAdapter Adapter = new SpinnerGovernmentsAdapter(getActivity(), response.body().getData());
-                if (RegisterFragmentSpinnerGovernments != null) {
-                    RegisterFragmentSpinnerGovernments.setAdapter(Adapter);
-                }
+        new DateInputMask(RegisterFragmentTiLBirthDate.getEditText());
+
+        HelperMethod.setSpinnerBloodType(getContext(), RegisterFragmentSpinnerBloodType);
+
+        getGovernments();
+        getCities();
+
+        RegisterFragmentSpinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CustomSpinnerItem item = (CustomSpinnerItem) parent.getSelectedItem();
+                Toast.makeText(getContext(), item.getSpinnerItemName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<Governorates> call, Throwable t) {
-
-            }
-        });
-        Call<Cities> citiesCall = mApiServices.getCities(new CitiesData().getGovernorateId());
-        citiesCall.enqueue(new Callback<Cities>() {
-            @Override
-            public void onResponse(Call<Cities> call, Response<Cities> response) {
-                SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getActivity(), response.body().getData());
-                if (RegisterFragmentSpinnerCities != null) {
-                    RegisterFragmentSpinnerCities.setAdapter(citiesAdapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Cities> call, Throwable t) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
 
 
         return view;
     }
 
-    private void extractInputValidation() {
+    private void extractInputChickValidation() {
         String name = RegisterFragmentTiLName.getEditText().getText().toString();
         String email = RegisterFragmentTiLEmail.getEditText().getText().toString().trim();
         String birthDate = RegisterFragmentTiLBirthDate.getEditText().getText().toString().trim();
-        String lastBloodDonation = RegisterFragmentTiLLastBloodDonation.getEditText().getText().toString();
+
         String phone = RegisterFragmentTiLPhone.getEditText().getText().toString().trim();
+        String lastBloodDonation = RegisterFragmentTiLLastBloodDonation.getEditText().getText().toString();
         String password = RegisterFragmentTiLPassword.getEditText().getText().toString().trim();
         String rePassword = RegisterFragmentTiLRePassword.getEditText().getText().toString().trim();
 
@@ -149,26 +125,93 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemSele
         } else if (!UserInputValidation.isValidRePassword(rePassword, password)) {
             RegisterFragmentTiLRePassword.setError("Re Password Is not equal Password..");
         } else {
-
+            doUserRegistration();
         }
     }
 
-    private void chickSpinner(Spinner spinner, Boolean b) {
-        if (b) {
-            spinner.setOnItemSelectedListener(this);
-        }
+    /**
+     * Do User Registration Using Api Call
+     */
+    private void doUserRegistration() {
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        CustomSpinnerItem item = (CustomSpinnerItem) parent.getSelectedItem();
-        Toast.makeText(getContext(), item.getSpinnerItemName(), Toast.LENGTH_SHORT).show();
+    /**
+     * Get Cities Using Api Call
+     */
+    private void getGovernments(){
+        Call<Governorates> call = mApiServices.getGovernments();
+        call.enqueue(new Callback<Governorates>() {
+            @Override
+            public void onResponse(Call<Governorates> call, Response<Governorates> response) {
+
+                if (response.isSuccessful()){
+                    SpinnerGovernmentsAdapter Adapter = new SpinnerGovernmentsAdapter(getActivity(), response.body().getData());
+                    if (RegisterFragmentSpinnerGovernments != null) {
+                        RegisterFragmentSpinnerGovernments.setAdapter(Adapter);
+                        RegisterFragmentSpinnerGovernments.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                GovernoratesData data = (GovernoratesData) parent.getSelectedItem();
+                                Toast.makeText(getContext(), data.getName(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    }else {
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Governorates> call, Throwable t) {
+
+            }
+        });
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    /**
+     * Get Cities Using Api Call
+     */
+    private void getCities(){
+        Call<Cities> citiesCall = mApiServices.getCities(new CitiesData().getGovernorateId());
+        citiesCall.enqueue(new Callback<Cities>() {
+            @Override
+            public void onResponse(Call<Cities> call, Response<Cities> response) {
+                if (response.isSuccessful()){
+                    SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getActivity(), response.body().getData());
+                    if (RegisterFragmentSpinnerCities != null) {
+                        RegisterFragmentSpinnerCities.setAdapter(citiesAdapter);
+                        RegisterFragmentSpinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                CitiesData data = (CitiesData) parent.getSelectedItem();
+                                mCitieId  = data.getId().toString();
 
+                                Toast.makeText(getContext(), mCitieId, Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Cities> call, Throwable t) {
+
+            }
+        });
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -178,9 +221,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemSele
 
     @OnClick(R.id.Register_fragment_Sign_up_btn)
     public void onViewClicked() {
-        Intent intent = new Intent(getActivity(), HomeCycleActivity.class);
-        Objects.requireNonNull(getContext()).startActivity(intent);
+        extractInputChickValidation();
     }
-
 
 }
