@@ -21,7 +21,7 @@ import com.example.mm.bank.data.model.cities.Cities;
 import com.example.mm.bank.data.model.cities.CitiesData;
 import com.example.mm.bank.data.model.governorates.Governorates;
 import com.example.mm.bank.data.model.governorates.GovernoratesData;
-import com.example.mm.bank.data.model.register.Register;
+import com.example.mm.bank.data.model.regester.Register;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.DateInputMask;
 import com.example.mm.bank.helper.HelperMethod;
@@ -148,34 +148,32 @@ public class RegisterFragment extends Fragment {
                                     String password, String rePassword, String bloodType) {
 
 
-        Call<Register> registerCall = RetrofitClient
+        final Call<Register> registerCall = RetrofitClient
                 .getInstance()
                 .getApiServices()
                 .addUserRegistration(name, email, birthDate, citiesId, phone,
-                lastBloodDonation, password, rePassword, bloodType);
+                                    lastBloodDonation, password, rePassword, bloodType);
 
         registerCall.enqueue(new Callback<Register>() {
             @Override
             public void onResponse(Call<Register> call, Response<Register> response) {
 
-                if (response.isSuccessful()){
-                    Register r = response.body();
-                    //Toast.makeText(getActivity(), "Registration Saccssfole" + response.body().toString(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), r.getMsg(), Toast.LENGTH_SHORT).show();
-                    Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
-                    getActivity().startActivity(toHome);
-
-
-                }else {
-                    Toast.makeText(getActivity(), "Chick your internet Connection !!" + response.errorBody(), Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus() == 1) {
+                        Toast.makeText(getContext(), "Welcome:" + response.body().getRegisterData().getClient().getName(), Toast.LENGTH_SHORT).show();
+                    } else if (response.body().getStatus() == 0) {
+                        Toast.makeText(getContext(), "0"+ response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<Register> call, Throwable t) {
-                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
     }
 
     /**

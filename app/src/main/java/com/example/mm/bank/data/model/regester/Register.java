@@ -1,5 +1,5 @@
 
-package com.example.mm.bank.data.model.register;
+package com.example.mm.bank.data.model.regester;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

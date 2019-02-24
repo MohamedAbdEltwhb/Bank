@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.data.model.login.Login;
-import com.example.mm.bank.data.model.register.Register;
-import com.example.mm.bank.data.rest.ApiServices;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
@@ -62,45 +60,45 @@ public class LoginFragment extends Fragment {
         } else if (!UserInputValidation.isValidPassword(password)) {
             LoginFragmentTiLPassword.setError("Please Enter Strong Password..");
         }else {
-            doLoginUser(phone, password);
+            //doLoginUser(phone, password);
         }
     }
 
-    private void doLoginUser(String phone, String password) {
-
-        Call<Login> loginCall = RetrofitClient
-                .getInstance()
-                .getApiServices()
-                .doUserLogin(phone, password);
-
-        loginCall.enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-                Login login = response.body();
-
-                if (response.isSuccessful()){
-
-                    Toast.makeText(getActivity(), "welcome", Toast.LENGTH_SHORT).show();
-
-//                    SharedPrefManager.getInstance(getActivity()).saveUser(login.getLoginData().getClient());
+//    private void doLoginUser(String phone, String password) {
 //
-//                    Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
-//                    toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    getActivity().startActivity(toHome);
-//                    getActivity().finish();
-
-                }else {
-                    Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-
-            }
-        });
-    }
+//        Call<Login> loginCall = RetrofitClient
+//                .getInstance()
+//                .getApiServices()
+//                .doUserLogin(phone, password);
+//
+//        loginCall.enqueue(new Callback<Login>() {
+//            @Override
+//            public void onResponse(Call<Login> call, Response<Login> response) {
+//                Login login = response.body();
+//
+//                if (response.isSuccessful()){
+//
+//                    Toast.makeText(getActivity(), "welcome", Toast.LENGTH_SHORT).show();
+//
+////                    SharedPrefManager.getInstance(getActivity()).saveUser(login.getLoginData().getClient());
+////
+////                    Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
+////                    toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////                    toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////                    getActivity().startActivity(toHome);
+////                    getActivity().finish();
+//
+//                }else {
+//                    Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Login> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
     @Override
     public void onStart() {
