@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.example.mm.bank.R;
 import com.example.mm.bank.adapter.SliderPagerAdapter;
+import com.example.mm.bank.data.local.SharedPrefManager;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.activities.UserCycleActivity;
 
 import butterknife.BindView;
@@ -60,5 +62,18 @@ public class SliderFragment extends Fragment {
     @OnClick(R.id.Slider_Fragment_btn_skip)
     public void onViewClicked() {
         getActivity().startActivity(new Intent(getActivity(), UserCycleActivity.class));
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (SharedPrefManager.getInstance(getContext()).isLoggedIn()){
+            Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
+            toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getActivity().startActivity(toHome);
+            getActivity().finish();
+        }
     }
 }

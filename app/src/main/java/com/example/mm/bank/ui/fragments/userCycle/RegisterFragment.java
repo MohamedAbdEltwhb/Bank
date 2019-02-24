@@ -1,6 +1,7 @@
 package com.example.mm.bank.ui.fragments.userCycle;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -20,11 +21,14 @@ import com.example.mm.bank.data.model.cities.Cities;
 import com.example.mm.bank.data.model.cities.CitiesData;
 import com.example.mm.bank.data.model.governorates.Governorates;
 import com.example.mm.bank.data.model.governorates.GovernoratesData;
-import com.example.mm.bank.data.rest.ApiServices;
+import com.example.mm.bank.data.model.register.Register;
+import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.DateInputMask;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.custom.CustomSpinnerItem;
+
 
 
 import butterknife.BindView;
@@ -35,7 +39,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.mm.bank.data.rest.RetrofitClient.getClient;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,11 +60,10 @@ public class RegisterFragment extends Fragment {
     @BindView(R.id.Register_Fragment_TiL_Re_Password) TextInputLayout RegisterFragmentTiLRePassword;
     @BindView(R.id.toolbar_text_title) TextView toolbarTextTitle;
 
-    private String mCitieId = null;
+    private String mCitiesId = null;
     private String mBloodType = null;
 
 
-    private ApiServices mApiServices;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -74,9 +76,9 @@ public class RegisterFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         toolbarTextTitle.setText(getResources().getString(R.string.register_toolbar_title));
-        mApiServices = getClient().create(ApiServices.class);
 
         new DateInputMask(RegisterFragmentTiLBirthDate.getEditText());
+        new DateInputMask(RegisterFragmentTiLLastBloodDonation.getEditText());
 
         HelperMethod.setSpinnerBloodType(getContext(), RegisterFragmentSpinnerBloodType);
 
@@ -87,7 +89,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CustomSpinnerItem item = (CustomSpinnerItem) parent.getSelectedItem();
-                Toast.makeText(getContext(), item.getSpinnerItemName(), Toast.LENGTH_SHORT).show();
+                mBloodType = item.getSpinnerItemName();
             }
 
             @Override
@@ -100,7 +102,7 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
-    private void extractInputChickValidation() {
+    private void extractInputChickValidation(String citiesId, String bloodType) {
         String name = RegisterFragmentTiLName.getEditText().getText().toString();
         String email = RegisterFragmentTiLEmail.getEditText().getText().toString().trim();
         String birthDate = RegisterFragmentTiLBirthDate.getEditText().getText().toString().trim();
@@ -125,21 +127,67 @@ public class RegisterFragment extends Fragment {
         } else if (!UserInputValidation.isValidRePassword(rePassword, password)) {
             RegisterFragmentTiLRePassword.setError("Re Password Is not equal Password..");
         } else {
-            doUserRegistration();
+            doUserRegistration(name, email, birthDate, citiesId, phone, lastBloodDonation, password, rePassword, bloodType);
         }
     }
 
     /**
      * Do User Registration Using Api Call
+     * @param name
+     * @param email
+     * @param birthDate
+     * @param citiesId
+     * @param phone
+     * @param lastBloodDonation
+     * @param password
+     * @param rePassword
+     * @param bloodType
      */
-    private void doUserRegistration() {
+    private void doUserRegistration(String name, String email, String birthDate,
+                                    String citiesId, String phone, String lastBloodDonation,
+                                    String password, String rePassword, String bloodType) {
+
+
+        Call<Register> registerCall = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .addUserRegistration(name, email, birthDate, citiesId, phone,
+                lastBloodDonation, password, rePassword, bloodType);
+
+        registerCall.enqueue(new Callback<Register>() {
+            @Override
+            public void onResponse(Call<Register> call, Response<Register> response) {
+
+                if (response.isSuccessful()){
+                    Register r = response.body();
+                    //Toast.makeText(getActivity(), "Registration Saccssfole" + response.body().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), r.getMsg(), Toast.LENGTH_SHORT).show();
+                    Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
+                    getActivity().startActivity(toHome);
+
+
+                }else {
+                    Toast.makeText(getActivity(), "Chick your internet Connection !!" + response.errorBody(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Register> call, Throwable t) {
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
      * Get Cities Using Api Call
      */
     private void getGovernments(){
-        Call<Governorates> call = mApiServices.getGovernments();
+
+        Call<Governorates> call = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .getGovernments();
+
         call.enqueue(new Callback<Governorates>() {
             @Override
             public void onResponse(Call<Governorates> call, Response<Governorates> response) {
@@ -177,7 +225,12 @@ public class RegisterFragment extends Fragment {
      * Get Cities Using Api Call
      */
     private void getCities(){
-        Call<Cities> citiesCall = mApiServices.getCities(new CitiesData().getGovernorateId());
+
+        Call<Cities> citiesCall = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .getCities(new CitiesData().getGovernorateId());
+
         citiesCall.enqueue(new Callback<Cities>() {
             @Override
             public void onResponse(Call<Cities> call, Response<Cities> response) {
@@ -189,10 +242,7 @@ public class RegisterFragment extends Fragment {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 CitiesData data = (CitiesData) parent.getSelectedItem();
-                                mCitieId  = data.getId().toString();
-
-                                Toast.makeText(getContext(), mCitieId, Toast.LENGTH_SHORT).show();
-
+                                mCitiesId = data.getId().toString();
                             }
 
                             @Override
@@ -211,8 +261,6 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -221,7 +269,9 @@ public class RegisterFragment extends Fragment {
 
     @OnClick(R.id.Register_fragment_Sign_up_btn)
     public void onViewClicked() {
-        extractInputChickValidation();
+        if (mCitiesId != null && mBloodType != null) {
+            extractInputChickValidation(mCitiesId, mBloodType);
+        }
     }
 
 }

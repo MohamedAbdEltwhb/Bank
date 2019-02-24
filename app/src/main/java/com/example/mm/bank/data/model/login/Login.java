@@ -1,10 +1,10 @@
 
-package com.example.mm.bank.data.model.register;
+package com.example.mm.bank.data.model.login;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Register {
+public class Login {
 
     @SerializedName("status")
     @Expose
@@ -12,9 +12,9 @@ public class Register {
     @SerializedName("msg")
     @Expose
     private String msg;
-    @SerializedName("registerData")
+    @SerializedName("loginData")
     @Expose
-    private RegisterData registerData;
+    private LoginData loginData;
 
     public Integer getStatus() {
         return status;
@@ -32,12 +32,12 @@ public class Register {
         this.msg = msg;
     }
 
-    public RegisterData getRegisterData() {
-        return registerData;
+    public LoginData getLoginData() {
+        return loginData;
     }
 
-    public void setRegisterData(RegisterData registerData) {
-        this.registerData = registerData;
+    public void setLoginData(LoginData loginData) {
+        this.loginData = loginData;
     }
 
 }

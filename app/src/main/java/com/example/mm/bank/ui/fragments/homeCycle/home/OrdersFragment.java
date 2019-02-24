@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mm.bank.R;
+import com.example.mm.bank.data.local.SharedPrefManager;
+import com.example.mm.bank.data.model.login.Client;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.ui.custom.CustomSpinnerItem;
 
@@ -29,6 +32,8 @@ public class OrdersFragment extends Fragment implements AdapterView.OnItemSelect
     Spinner orderCustomSpinnerBloodType;
     @BindView(R.id.order_customSpinner_Cities)
     Spinner orderCustomSpinnerCities;
+    @BindView(R.id.txt)
+    TextView txt;
 
 
     public OrdersFragment() {
@@ -42,7 +47,10 @@ public class OrdersFragment extends Fragment implements AdapterView.OnItemSelect
         View view = inflater.inflate(R.layout.fragment_orders, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        if (HelperMethod.setSpinnerBloodType(getActivity(), orderCustomSpinnerBloodType)){
+        Client client = SharedPrefManager.getInstance(getContext()).getUser();
+        txt.setText("Welcome Back" + client.getName());
+
+        if (HelperMethod.setSpinnerBloodType(getActivity(), orderCustomSpinnerBloodType)) {
             orderCustomSpinnerBloodType.setOnItemSelectedListener(this);
         }
         return view;

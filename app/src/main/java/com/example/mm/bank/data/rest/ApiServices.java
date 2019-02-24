@@ -2,6 +2,7 @@ package com.example.mm.bank.data.rest;
 
 import com.example.mm.bank.data.model.cities.Cities;
 import com.example.mm.bank.data.model.governorates.Governorates;
+import com.example.mm.bank.data.model.login.Login;
 import com.example.mm.bank.data.model.register.Register;
 
 import okhttp3.MultipartBody;
@@ -25,7 +26,7 @@ public interface ApiServices {
 
     @POST("register")
     @FormUrlEncoded
-    Call<Register> addUserRegisteration (@Field("name") String Register,
+    Call<Register> addUserRegistration (@Field("name") String name,
                                          @Field("email") String email,
                                          @Field("birth_date") String birth_date,
                                          @Field("city_id") String city_id,
@@ -34,6 +35,10 @@ public interface ApiServices {
                                          @Field("password") String password,
                                          @Field("password_confirmation") String password_confirmation,
                                          @Field("blood_type") String blood_type);
+    @POST("login")
+    @FormUrlEncoded
+    Call<Login> doUserLogin(@Field("phone") String phone,
+                            @Field("password") String password);
 
 
 //    @GET("governorates")
