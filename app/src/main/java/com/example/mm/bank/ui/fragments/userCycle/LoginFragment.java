@@ -2,6 +2,7 @@ package com.example.mm.bank.ui.fragments.userCycle;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
-import com.example.mm.bank.data.model.login.Login;
+import com.example.mm.bank.data.model.regester.Register;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
@@ -51,7 +52,8 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-    private void extractInputChickValidation(){
+
+    private void extractInputChickValidation() {
         String phone = LoginFragmentTiLPhone.getEditText().getText().toString().trim();
         String password = LoginFragmentTiLPassword.getEditText().getText().toString().trim();
 
@@ -59,58 +61,54 @@ public class LoginFragment extends Fragment {
             LoginFragmentTiLPhone.setError("Please Enter Correct Phone Number..");
         } else if (!UserInputValidation.isValidPassword(password)) {
             LoginFragmentTiLPassword.setError("Please Enter Strong Password..");
-        }else {
-            //doLoginUser(phone, password);
+        } else {
+            doLoginUser(phone, password);
         }
     }
 
-//    private void doLoginUser(String phone, String password) {
-//
-//        Call<Login> loginCall = RetrofitClient
-//                .getInstance()
-//                .getApiServices()
-//                .doUserLogin(phone, password);
-//
-//        loginCall.enqueue(new Callback<Login>() {
-//            @Override
-//            public void onResponse(Call<Login> call, Response<Login> response) {
-//                Login login = response.body();
-//
-//                if (response.isSuccessful()){
-//
-//                    Toast.makeText(getActivity(), "welcome", Toast.LENGTH_SHORT).show();
-//
-////                    SharedPrefManager.getInstance(getActivity()).saveUser(login.getLoginData().getClient());
-////
-////                    Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
-////                    toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                    toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////                    getActivity().startActivity(toHome);
-////                    getActivity().finish();
-//
-//                }else {
-//                    Toast.makeText(getActivity(), "no", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Login> call, Throwable t) {
-//
-//            }
-//        });
-//    }
+    /**
+     * Do User Login Using Api Call
+     *
+     * @param phone
+     * @param password
+     */
+    private void doLoginUser(String phone, String password) {
 
-    @Override
-    public void onStart() {
-        super.onStart();
+        Call<Register> loginCall = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .doUserLogin(phone, password);
 
-        if (SharedPrefManager.getInstance(getContext()).isLoggedIn()){
-            Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
-            toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().startActivity(toHome);
-            getActivity().finish();
-        }
+        loginCall.enqueue(new Callback<Register>() {
+            @Override
+            public void onResponse(Call<Register> call, Response<Register> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus() == 1) {
+
+                        // Save All User Data in SharedPreferences
+                        SharedPrefManager.getInstance(getContext()).saveUser(response.body().getRegisterData().getRegisterClient());
+
+                        // Save User ApiToken in SharedPreferences
+                        SharedPrefManager.getInstance(getContext()).setApiToken(response.body().getRegisterData().getApiToken());
+
+                        Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
+                        toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startActivity(toHome);
+                        getActivity().finish();
+
+
+                    } else if (response.body().getStatus() == 0) {
+                        Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Register> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -124,13 +122,6 @@ public class LoginFragment extends Fragment {
         switch (view.getId()) {
             case R.id.Login_Fragment_btn_Login:
                 extractInputChickValidation();
-
-//                HelperMethod.replaceFragments(
-//                        new HomeFragment(),
-//                        getActivity().getSupportFragmentManager(),
-//                        R.id.User_Cycle_FL_Fragment_Container,
-//                        null,
-//                        null);
                 break;
 
             case R.id.Login_Fragment_btn_Create_new_account:

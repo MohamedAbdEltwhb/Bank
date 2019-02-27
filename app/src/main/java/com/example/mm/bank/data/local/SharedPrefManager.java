@@ -3,7 +3,7 @@ package com.example.mm.bank.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.mm.bank.data.model.login.Client;
+import com.example.mm.bank.data.model.regester.RegisterClient;
 
 import static com.example.mm.bank.helper.Constant.SHARED_PREF_NAME;
 
@@ -23,22 +23,22 @@ public class SharedPrefManager {
         return mInstance;
     }
 
-    public void saveUser(Client client){
+    public void saveUser(RegisterClient registerClient){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("id", client.getId());
-        editor.putString("createdAt", client.getCreatedAt());
-        editor.putString("updatedAt", client.getUpdatedAt());
-        editor.putString("name", client.getName());
-        editor.putString("email", client.getEmail());
-        editor.putString("birthDate", client.getBirthDate());
-        editor.putString("cityId", client.getCityId());
-        editor.putString("phone", client.getPhone());
-        editor.putString("donationLastDate", client.getDonationLastDate());
-        editor.putString("bloodType", client.getBloodType());
-        editor.putString("isActive", client.getIsActive());
-        editor.putString("pinCode", client.getPinCode());
+        editor.putInt("id", registerClient.getId());
+        editor.putString("createdAt", registerClient.getCreatedAt());
+        editor.putString("updatedAt", registerClient.getUpdatedAt());
+        editor.putString("name", registerClient.getName());
+        editor.putString("email", registerClient.getEmail());
+        editor.putString("birthDate", registerClient.getBirthDate());
+        editor.putString("cityId", registerClient.getCityId());
+        editor.putString("phone", registerClient.getPhone());
+        editor.putString("donationLastDate", registerClient.getDonationLastDate());
+        editor.putString("bloodType", registerClient.getBloodType());
+        editor.putString("isActive", registerClient.getIsActive());
+        editor.putString("pinCode", registerClient.getPinCode());
 
         editor.apply();
     }
@@ -48,10 +48,10 @@ public class SharedPrefManager {
         return sharedPreferences.getInt("id", -1) != -1;
     }
 
-    public Client getUser(){
+    public RegisterClient getUser(){
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-        return new Client(
+        return new RegisterClient(
                 sharedPreferences.getInt("id", -1),
                 sharedPreferences.getString("createdAt", null),
                 sharedPreferences.getString("updatedAt", null),
@@ -64,6 +64,21 @@ public class SharedPrefManager {
                 sharedPreferences.getString("bloodType", null),
                 sharedPreferences.getString("isActive", null),
                 sharedPreferences.getString("pinCode", null));
+    }
+
+    public void setApiToken(String apiToken){
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("api_token", apiToken);
+        editor.apply();
+    }
+
+    public String getApiToken(){
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+        String apiToken = sharedPreferences.getString("api_token","");
+        return apiToken ;
     }
 
     public void clare(){

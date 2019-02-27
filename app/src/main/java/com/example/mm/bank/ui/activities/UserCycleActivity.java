@@ -14,8 +14,8 @@ public class UserCycleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_cycle);
 
-        LoginFragment loginFragment = new LoginFragment();
-        HelperMethod.replaceFragments(loginFragment,
+        HelperMethod.replaceFragments(
+                new LoginFragment(),
                 getSupportFragmentManager(),
                 R.id.User_Cycle_FL_Fragment_Container,
                 null,

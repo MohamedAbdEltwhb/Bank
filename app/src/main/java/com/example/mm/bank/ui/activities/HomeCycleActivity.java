@@ -1,9 +1,7 @@
 package com.example.mm.bank.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.mm.bank.R;
+import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.ui.fragments.homeCycle.AboutApplicationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.ContactWithUsFragment;
@@ -22,10 +21,12 @@ import com.example.mm.bank.ui.fragments.homeCycle.FavoriteFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.NotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.SettingsNotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
-import com.example.mm.bank.ui.fragments.userCycle.RegisterFragment;
+import com.example.mm.bank.ui.fragments.homeCycle.posts.OnItemPostDetailsSend;
+import com.example.mm.bank.ui.fragments.homeCycle.posts.PostsDetailsFragment;
 
 public class HomeCycleActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnItemPostDetailsSend {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class HomeCycleActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer,toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         //toggle.setHomeAsUpIndicator(R.drawable.ic_nav_icon);
         drawer.addDrawerListener(toggle);
@@ -97,7 +98,7 @@ public class HomeCycleActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.nav_profile:
                 HelperMethod.replaceFragments(
                         new EditProfileFragment(),
@@ -153,12 +154,39 @@ public class HomeCycleActivity extends AppCompatActivity
             case R.id.nav_evaluation:
                 break;
             case R.id.nav_log_out:
+                logoutUser();
                 break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void logoutUser() {
+        SharedPrefManager.getInstance(this).clare();
+
+        Intent toLogin = new Intent(this, UserCycleActivity.class);
+        toLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        toLogin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(toLogin);
+        finish();
+    }
+
+    @Override
+    public void onSentItemDetails(String title, String thumbnailFullPath) {
+        PostsDetailsFragment detailsFragment = new PostsDetailsFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(POST_TITLE, title);
+        bundle.putString(THUMBNAIL_FULL_PATH, thumbnailFullPath);
+        detailsFragment.setArguments(bundle);
+
+        HelperMethod.replaceFragments(detailsFragment,
+                getSupportFragmentManager(),
+                R.id.Home_Cycle_FL_Fragment_Container,
+                null,
+                null);
     }
 
 //    private void addNewNavFragments(){

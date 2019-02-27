@@ -63,17 +63,4 @@ public class SliderFragment extends Fragment {
     public void onViewClicked() {
         getActivity().startActivity(new Intent(getActivity(), UserCycleActivity.class));
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (SharedPrefManager.getInstance(getContext()).isLoggedIn()){
-            Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
-            toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            getActivity().startActivity(toHome);
-            getActivity().finish();
-        }
-    }
 }

@@ -12,7 +12,7 @@ public class Register {
     @SerializedName("msg")
     @Expose
     private String msg;
-    @SerializedName("registerData")
+    @SerializedName("data")
     @Expose
     private RegisterData registerData;
 

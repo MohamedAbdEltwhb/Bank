@@ -21,7 +21,6 @@ import butterknife.Unbinder;
 public class SettingsNotificationFragment extends Fragment {
 
 
-
     Unbinder unbinder;
 
     public SettingsNotificationFragment() {

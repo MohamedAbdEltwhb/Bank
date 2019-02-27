@@ -1,6 +1,7 @@
 package com.example.mm.bank.ui.fragments.splashCycle;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mm.bank.R;
+import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.helper.HelperMethod;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.jaeger.library.StatusBarUtil;
 
 import static com.example.mm.bank.helper.Constant.SPLASH_DISPLAY_LENGTH;
@@ -32,16 +35,24 @@ public class SplashFragment extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SliderFragment sliderFragment = new SliderFragment();
-                HelperMethod.replaceFragments(
-                        sliderFragment,
-                        getActivity().getSupportFragmentManager(),
-                        R.id.Splash_Cycle_FL_Fragment_Container,
-                        null,
-                        null
-                );
+                if (SharedPrefManager.getInstance(getContext()).isLoggedIn()) {
+                    Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
+                    toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(toHome);
+                    getActivity().finish();
+
+                }else {
+                    HelperMethod.replaceFragments(
+                            new SliderFragment(),
+                            getActivity().getSupportFragmentManager(),
+                            R.id.Splash_Cycle_FL_Fragment_Container,
+                            null,
+                            null
+                    );
+                }
             }
-        },SPLASH_DISPLAY_LENGTH);
+        }, SPLASH_DISPLAY_LENGTH);
 
         return view;
     }

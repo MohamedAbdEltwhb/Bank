@@ -4,8 +4,17 @@ package com.example.mm.bank.data.model.regester;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Client {
+public class RegisterClient {
 
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
     @SerializedName("name")
     @Expose
     private String name;
@@ -27,15 +36,51 @@ public class Client {
     @SerializedName("blood_type")
     @Expose
     private String bloodType;
-    @SerializedName("updated_at")
+    @SerializedName("is_active")
     @Expose
-    private String updatedAt;
-    @SerializedName("created_at")
+    private String isActive;
+    @SerializedName("pin_code")
     @Expose
-    private String createdAt;
-    @SerializedName("id")
-    @Expose
-    private Integer id;
+    private String pinCode;
+
+    public RegisterClient(Integer id, String createdAt, String updatedAt, String name, String email, String birthDate, String cityId, String phone, String donationLastDate, String bloodType, String isActive, String pinCode) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.cityId = cityId;
+        this.phone = phone;
+        this.donationLastDate = donationLastDate;
+        this.bloodType = bloodType;
+        this.isActive = isActive;
+        this.pinCode = pinCode;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public String getName() {
         return name;
@@ -93,28 +138,20 @@ public class Client {
         this.bloodType = bloodType;
     }
 
-    public String getUpdatedAt() {
-        return updatedAt;
+    public String getIsActive() {
+        return isActive;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getPinCode() {
+        return pinCode;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
     }
 
 }

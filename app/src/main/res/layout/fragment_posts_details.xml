@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/LightGrayColor"
-    tools:context=".ui.fragments.homeCycle.home.PostsDetailsFragment">
+    tools:context=".ui.fragments.homeCycle.posts.PostsDetailsFragment">
 
     <ImageView
         android:id="@+id/Posts_Details_ImageView"

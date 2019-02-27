@@ -11,7 +11,7 @@ public class RegisterData {
     private String apiToken;
     @SerializedName("client")
     @Expose
-    private Client client;
+    private RegisterClient registerClient;
 
     public String getApiToken() {
         return apiToken;
@@ -21,12 +21,12 @@ public class RegisterData {
         this.apiToken = apiToken;
     }
 
-    public Client getClient() {
-        return client;
+    public RegisterClient getRegisterClient() {
+        return registerClient;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setRegisterClient(RegisterClient registerClient) {
+        this.registerClient = registerClient;
     }
 
 }

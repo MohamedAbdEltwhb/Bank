@@ -5,8 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.homeCycle.home.PostsFragment">
+    tools:context=".ui.fragments.homeCycle.posts.PostsFragment">
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/Posts_RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
     <android.support.design.widget.FloatingActionButton

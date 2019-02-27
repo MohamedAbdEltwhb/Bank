@@ -23,12 +23,9 @@ import com.example.mm.bank.data.model.governorates.Governorates;
 import com.example.mm.bank.data.model.governorates.GovernoratesData;
 import com.example.mm.bank.data.model.regester.Register;
 import com.example.mm.bank.data.rest.RetrofitClient;
-import com.example.mm.bank.helper.DateInputMask;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
-import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.custom.CustomSpinnerItem;
-
 
 
 import butterknife.BindView;
@@ -47,22 +44,32 @@ public class RegisterFragment extends Fragment {
 
     Unbinder unbinder;
 
-    @BindView(R.id.Register_Fragment_Spinner_Governments) Spinner RegisterFragmentSpinnerGovernments;
-    @BindView(R.id.Register_Fragment_Spinner_Blood_Type) Spinner RegisterFragmentSpinnerBloodType;
-    @BindView(R.id.Register_Fragment_Spinner_Cities) Spinner RegisterFragmentSpinnerCities;
+    @BindView(R.id.Register_Fragment_Spinner_Governments)
+    Spinner RegisterFragmentSpinnerGovernments;
+    @BindView(R.id.Register_Fragment_Spinner_Blood_Type)
+    Spinner RegisterFragmentSpinnerBloodType;
+    @BindView(R.id.Register_Fragment_Spinner_Cities)
+    Spinner RegisterFragmentSpinnerCities;
 
-    @BindView(R.id.Register_Fragment_TiL_Name) TextInputLayout RegisterFragmentTiLName;
-    @BindView(R.id.Register_Fragment_TiL_Email) TextInputLayout RegisterFragmentTiLEmail;
-    @BindView(R.id.Register_Fragment_TiL_BirthDate) TextInputLayout RegisterFragmentTiLBirthDate;
-    @BindView(R.id.Register_Fragment_TiL_Last_Blood_Donation) TextInputLayout RegisterFragmentTiLLastBloodDonation;
-    @BindView(R.id.Register_Fragment_TiL_Phone) TextInputLayout RegisterFragmentTiLPhone;
-    @BindView(R.id.Register_Fragment_TiL_Password) TextInputLayout RegisterFragmentTiLPassword;
-    @BindView(R.id.Register_Fragment_TiL_Re_Password) TextInputLayout RegisterFragmentTiLRePassword;
-    @BindView(R.id.toolbar_text_title) TextView toolbarTextTitle;
+    @BindView(R.id.Register_Fragment_TiL_Name)
+    TextInputLayout RegisterFragmentTiLName;
+    @BindView(R.id.Register_Fragment_TiL_Email)
+    TextInputLayout RegisterFragmentTiLEmail;
+    @BindView(R.id.Register_Fragment_TiL_BirthDate)
+    TextInputLayout RegisterFragmentTiLBirthDate;
+    @BindView(R.id.Register_Fragment_TiL_Last_Blood_Donation)
+    TextInputLayout RegisterFragmentTiLLastBloodDonation;
+    @BindView(R.id.Register_Fragment_TiL_Phone)
+    TextInputLayout RegisterFragmentTiLPhone;
+    @BindView(R.id.Register_Fragment_TiL_Password)
+    TextInputLayout RegisterFragmentTiLPassword;
+    @BindView(R.id.Register_Fragment_TiL_Re_Password)
+    TextInputLayout RegisterFragmentTiLRePassword;
+    @BindView(R.id.toolbar_text_title)
+    TextView toolbarTextTitle;
 
     private String mCitiesId = null;
     private String mBloodType = null;
-
 
 
     public RegisterFragment() {
@@ -76,9 +83,6 @@ public class RegisterFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         toolbarTextTitle.setText(getResources().getString(R.string.register_toolbar_title));
-
-        new DateInputMask(RegisterFragmentTiLBirthDate.getEditText());
-        new DateInputMask(RegisterFragmentTiLLastBloodDonation.getEditText());
 
         HelperMethod.setSpinnerBloodType(getContext(), RegisterFragmentSpinnerBloodType);
 
@@ -133,6 +137,7 @@ public class RegisterFragment extends Fragment {
 
     /**
      * Do User Registration Using Api Call
+     *
      * @param name
      * @param email
      * @param birthDate
@@ -147,12 +152,11 @@ public class RegisterFragment extends Fragment {
                                     String citiesId, String phone, String lastBloodDonation,
                                     String password, String rePassword, String bloodType) {
 
-
         final Call<Register> registerCall = RetrofitClient
                 .getInstance()
                 .getApiServices()
                 .addUserRegistration(name, email, birthDate, citiesId, phone,
-                                    lastBloodDonation, password, rePassword, bloodType);
+                        lastBloodDonation, password, rePassword, bloodType);
 
         registerCall.enqueue(new Callback<Register>() {
             @Override
@@ -160,9 +164,15 @@ public class RegisterFragment extends Fragment {
 
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
-                        Toast.makeText(getContext(), "Welcome:" + response.body().getRegisterData().getClient().getName(), Toast.LENGTH_SHORT).show();
+
+                        HelperMethod.replaceFragments(
+                                new LoginFragment(),
+                                getActivity().getSupportFragmentManager(),
+                                R.id.User_Cycle_FL_Fragment_Container,
+                                null,
+                                null);
                     } else if (response.body().getStatus() == 0) {
-                        Toast.makeText(getContext(), "0"+ response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "0" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -179,7 +189,7 @@ public class RegisterFragment extends Fragment {
     /**
      * Get Cities Using Api Call
      */
-    private void getGovernments(){
+    private void getGovernments() {
 
         Call<Governorates> call = RetrofitClient
                 .getInstance()
@@ -190,7 +200,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onResponse(Call<Governorates> call, Response<Governorates> response) {
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     SpinnerGovernmentsAdapter Adapter = new SpinnerGovernmentsAdapter(getActivity(), response.body().getData());
                     if (RegisterFragmentSpinnerGovernments != null) {
                         RegisterFragmentSpinnerGovernments.setAdapter(Adapter);
@@ -206,7 +216,7 @@ public class RegisterFragment extends Fragment {
 
                             }
                         });
-                    }else {
+                    } else {
 
                     }
                 }
@@ -222,7 +232,7 @@ public class RegisterFragment extends Fragment {
     /**
      * Get Cities Using Api Call
      */
-    private void getCities(){
+    private void getCities() {
 
         Call<Cities> citiesCall = RetrofitClient
                 .getInstance()
@@ -232,7 +242,7 @@ public class RegisterFragment extends Fragment {
         citiesCall.enqueue(new Callback<Cities>() {
             @Override
             public void onResponse(Call<Cities> call, Response<Cities> response) {
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getActivity(), response.body().getData());
                     if (RegisterFragmentSpinnerCities != null) {
                         RegisterFragmentSpinnerCities.setAdapter(citiesAdapter);

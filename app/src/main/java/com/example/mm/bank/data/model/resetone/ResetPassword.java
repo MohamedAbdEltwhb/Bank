@@ -1,11 +1,10 @@
 
-package com.example.mm.bank.data.model.login;
+package com.example.mm.bank.data.model.resetone;
 
-import com.example.mm.bank.data.model.regester.RegisterData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Login {
+public class ResetPassword {
 
     @SerializedName("status")
     @Expose
@@ -15,7 +14,7 @@ public class Login {
     private String msg;
     @SerializedName("data")
     @Expose
-    private RegisterData loginData;
+    private ResetPasswordData resetPasswordData;
 
     public Integer getStatus() {
         return status;
@@ -33,12 +32,12 @@ public class Login {
         this.msg = msg;
     }
 
-    public RegisterData getLoginData() {
-        return loginData;
+    public ResetPasswordData getResetPasswordData() {
+        return resetPasswordData;
     }
 
-    public void setLoginData(RegisterData loginData) {
-        this.loginData = loginData;
+    public void setResetPasswordData(ResetPasswordData resetPasswordData) {
+        this.resetPasswordData = resetPasswordData;
     }
 
 }
