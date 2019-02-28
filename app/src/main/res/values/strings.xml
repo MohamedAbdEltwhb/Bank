@@ -65,4 +65,6 @@
     <string name="about_application">About Application</string>
     <string name="app_evaluation">App Evaluation</string>
     <string name="log_out">Log Out</string>
+    <string name="message_title">Message Title</string>
+    <string name="your_message">Your Message</string>
 </resources>

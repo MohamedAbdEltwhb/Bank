@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.mm.bank.R;
 import com.example.mm.bank.data.model.newPassword.NewPassword;
@@ -27,7 +28,6 @@ import retrofit2.Response;
  */
 public class ForgetPasswordStep2Fragment extends Fragment {
 
-
     Unbinder unbinder;
     @BindView(R.id.Forget_password2_Fragment_TiL_code)
     TextInputLayout ForgetPassword2FragmentTiLCode;
@@ -42,7 +42,6 @@ public class ForgetPasswordStep2Fragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +51,9 @@ public class ForgetPasswordStep2Fragment extends Fragment {
         return view;
     }
 
+    /**
+     * Extract Input >> Code & Password & Re Password & Phone
+     */
     private void extractInputChickValidation() {
         String code = ForgetPassword2FragmentTiLCode.getEditText().getText().toString();
         String password = ForgetPassword2FragmentTiLPassword.getEditText().getText().toString();
@@ -92,6 +94,8 @@ public class ForgetPasswordStep2Fragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
 
+                        Toast.makeText(getContext(), "" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
+
                         HelperMethod.replaceFragments(
                                 new LoginFragment(),
                                 getActivity().getSupportFragmentManager(),
@@ -99,6 +103,8 @@ public class ForgetPasswordStep2Fragment extends Fragment {
                                 null,
                                 null);
 
+                    } else {
+                        Toast.makeText(getContext(), "" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }
 

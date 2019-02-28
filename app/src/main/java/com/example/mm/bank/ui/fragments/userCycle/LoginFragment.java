@@ -2,8 +2,8 @@ package com.example.mm.bank.ui.fragments.userCycle;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,12 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mm.bank.R;
-import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.data.model.regester.Register;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
 import com.example.mm.bank.ui.activities.HomeCycleActivity;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +27,8 @@ import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.example.mm.bank.data.local.SharedPrefManager.*;
 
 
 /**
@@ -38,13 +41,12 @@ public class LoginFragment extends Fragment {
     @BindView(R.id.Login_Fragment_TiL_Password)
     TextInputLayout LoginFragmentTiLPassword;
 
-
     public LoginFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -54,8 +56,8 @@ public class LoginFragment extends Fragment {
 
 
     private void extractInputChickValidation() {
-        String phone = LoginFragmentTiLPhone.getEditText().getText().toString().trim();
-        String password = LoginFragmentTiLPassword.getEditText().getText().toString().trim();
+        String phone = Objects.requireNonNull(LoginFragmentTiLPhone.getEditText()).getText().toString().trim();
+        String password = Objects.requireNonNull(LoginFragmentTiLPassword.getEditText()).getText().toString().trim();
 
         if (!UserInputValidation.isValidMobile(phone)) {
             LoginFragmentTiLPhone.setError("Please Enter Correct Phone Number..");
@@ -81,31 +83,33 @@ public class LoginFragment extends Fragment {
 
         loginCall.enqueue(new Callback<Register>() {
             @Override
-            public void onResponse(Call<Register> call, Response<Register> response) {
+            public void onResponse(@NonNull Call<Register> call, @NonNull Response<Register> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
 
-                        // Save All User Data in SharedPreferences
-                        SharedPrefManager.getInstance(getContext()).saveUser(response.body().getRegisterData().getRegisterClient());
+                        // Save All User PostsDetailsData in SharedPreferences
+                        getInstance(getContext()).saveUser(response.body().getRegisterData().getRegisterClient());
 
                         // Save User ApiToken in SharedPreferences
-                        SharedPrefManager.getInstance(getContext()).setApiToken(response.body().getRegisterData().getApiToken());
+                        getInstance(getContext()).setApiToken(response.body().getRegisterData().getApiToken());
 
                         Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
                         toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         toHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().startActivity(toHome);
+                        Objects.requireNonNull(getActivity()).startActivity(toHome);
                         getActivity().finish();
 
 
-                    } else if (response.body().getStatus() == 0) {
-                        Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                    } else {
+                        if (response.body() != null) {
+                            Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<Register> call, Throwable t) {
+            public void onFailure(@NonNull Call<Register> call, @NonNull Throwable t) {
 
             }
         });
@@ -127,7 +131,7 @@ public class LoginFragment extends Fragment {
             case R.id.Login_Fragment_btn_Create_new_account:
                 HelperMethod.replaceFragments(
                         new RegisterFragment(),
-                        getActivity().getSupportFragmentManager(),
+                        Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                         R.id.User_Cycle_FL_Fragment_Container,
                         null,
                         null);
@@ -136,7 +140,7 @@ public class LoginFragment extends Fragment {
             case R.id.Login_Fragment_Tv_forget_password:
                 HelperMethod.replaceFragments(
                         new ForgetPasswordStep1Fragment(),
-                        getActivity().getSupportFragmentManager(),
+                        Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                         R.id.User_Cycle_FL_Fragment_Container,
                         null,
                         null);

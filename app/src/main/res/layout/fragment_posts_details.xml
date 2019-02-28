@@ -37,17 +37,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/Posts_Details_IV_Like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <FrameLayout
+                android:id="@+id/frameLayout_details_like"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="@dimen/dimens_l"
                 android:layout_marginTop="@dimen/dimens_l"
                 android:background="@drawable/posts_like_btn"
-                android:padding="@dimen/dimens_m"
-                android:src="@drawable/ic_like_a"
+                android:padding="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.example.mm.bank.ui.custom.LikeViewCheckBox
+                    android:id="@+id/item_posts_Details_Like_ChickBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/background_chickbox_view"
+                    android:button="@null" />
+
+            </FrameLayout>
+
 
             <TextView
                 android:id="@+id/Posts_Details_TV_Title"
@@ -59,10 +69,10 @@
                 android:text="@string/the_way_of_disease_prevention"
                 android:textColor="@color/GreyDeep"
                 android:textSize="@dimen/m2"
-                app:layout_constraintBottom_toBottomOf="@+id/Posts_Details_IV_Like"
-                app:layout_constraintEnd_toStartOf="@+id/Posts_Details_IV_Like"
+                app:layout_constraintBottom_toBottomOf="@+id/frameLayout_details_like"
+                app:layout_constraintEnd_toStartOf="@+id/frameLayout_details_like"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/Posts_Details_IV_Like" />
+                app:layout_constraintTop_toTopOf="@+id/frameLayout_details_like" />
 
 
             <FrameLayout
@@ -73,9 +83,10 @@
                 android:background="@color/LightGrayColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/Posts_Details_IV_Like" />
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout_details_like" />
 
             <TextView
+                android:id="@+id/Details_Posts_textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/dimens_l"

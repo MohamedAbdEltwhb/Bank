@@ -1,30 +1,33 @@
 package com.example.mm.bank.adapter;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mm.bank.R;
+import com.example.mm.bank.data.local.SharedPrefManager;
+import com.example.mm.bank.data.model.favourite_posts.FavouritePosts;
 import com.example.mm.bank.data.model.posts.PostsDatum;
+import com.example.mm.bank.data.rest.RetrofitClient;
+import com.example.mm.bank.ui.custom.LikeViewCheckBox;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PostsFragmentAdapter extends RecyclerView.Adapter<PostsFragmentAdapter.PostsFragmentHolder> {
 
-    //private boolean likeImage = false;
     private List<PostsDatum> data;
     private Context mContext;
 
@@ -45,9 +48,9 @@ public class PostsFragmentAdapter extends RecyclerView.Adapter<PostsFragmentAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final PostsFragmentHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final PostsFragmentHolder holder, final int position) {
 
-        PostsDatum postsDatum = data.get(position);
+        final PostsDatum postsDatum = data.get(position);
 
         holder.PostsItemTVTitle.setText(postsDatum.getTitle());
 
@@ -55,54 +58,45 @@ public class PostsFragmentAdapter extends RecyclerView.Adapter<PostsFragmentAdap
                 .load(postsDatum.getThumbnailFullPath())
                 .into(holder.PostItemImageView);
 
-        holder.itemPostsLikeButton.setImageResource(R.drawable.ic_like_a);
-
-        holder.itemPostsLikeButton.setOnClickListener(new View.OnClickListener() {
-            ValueAnimator buttonColorAnim = null; // to hold the button animator
-            @SuppressLint("RestrictedApi")
+        holder.checkBoxLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(buttonColorAnim != null){
-                    buttonColorAnim.reverse();
-                    buttonColorAnim = null;
-                }
-                else {
-                    final ImageView button = (ImageView) v;
-                    buttonColorAnim = ValueAnimator.ofObject(new ArgbEvaluator(), R.drawable.ic_like_a, R.drawable.ic_lick_clicked);
-                    buttonColorAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                        @Override
-                        public void onAnimationUpdate(ValueAnimator animator) {
-                            button.setImageResource((Integer) animator.getAnimatedValue());
+                Call<FavouritePosts> favouritePostsCall = RetrofitClient
+                        .getInstance()
+                        .getApiServices()
+                        .postToggleFavourite(postsDatum.getId(), SharedPrefManager.getInstance(mContext).getApiToken());
+                favouritePostsCall.enqueue(new Callback<FavouritePosts>() {
+                    @Override
+                    public void onResponse(Call<FavouritePosts> call, Response<FavouritePosts> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().getStatus() == 1) {
+
+                                notifyDataSetChanged();
+                                Toast.makeText(mContext, "" + postsDatum.getIsFavourite(), Toast.LENGTH_SHORT).show();
+
+//                                if (holder.checkBoxLike.isChecked()) {
+//                                    postsDatum.setIsFavourite(true);
+//                                    notifyDataSetChanged();
+//                                    Toast.makeText(mContext, "" + postsDatum.getIsFavourite(), Toast.LENGTH_SHORT).show();
+//                                } else {
+//                                    postsDatum.setIsFavourite(false);
+//                                    notifyDataSetChanged();
+//                                    Toast.makeText(mContext, "" + postsDatum.getIsFavourite(), Toast.LENGTH_SHORT).show();
+//                                }
+                            } else {
+                                Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_LONG).show();
+                            }
                         }
-                    });
-                    buttonColorAnim.start();
-                }
+                    }
+
+                    @Override
+                    public void onFailure(Call<FavouritePosts> call, Throwable t) {
+
+                    }
+                });
             }
         });
-
-
-
-
-
-
-
-
-
-//        holder.frameLayoutImageViewlike.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!likeImage) {
-//                    holder.itemPostsLikeButton.setImageResource(R.drawable.ic_lick_clicked);
-//                    likeImage = true;
-//
-//                } else {
-//                    holder.itemPostsLikeButton.setImageResource(R.drawable.ic_like_a);
-//                    likeImage = false;
-//                }
-//            }
-//        });
-
     }
 
     @Override
@@ -110,10 +104,9 @@ public class PostsFragmentAdapter extends RecyclerView.Adapter<PostsFragmentAdap
         return data.size();
     }
 
-    class PostsFragmentHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class PostsFragmentHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        FrameLayout frameLayoutImageViewlike;
-        private ImageView itemPostsLikeButton;
+        private LikeViewCheckBox checkBoxLike;
         private TextView PostsItemTVTitle;
         private ImageView PostItemImageView;
 
@@ -121,8 +114,7 @@ public class PostsFragmentAdapter extends RecyclerView.Adapter<PostsFragmentAdap
 
         public PostsFragmentHolder(View itemView, OnPostClickListener onPostClickListener) {
             super(itemView);
-            frameLayoutImageViewlike = itemView.findViewById(R.id.frameLayout_ImageView_like);
-            itemPostsLikeButton = itemView.findViewById(R.id.item_posts_Like_button);
+            checkBoxLike = itemView.findViewById(R.id.item_posts_Like_button);
             PostsItemTVTitle = itemView.findViewById(R.id.Posts_item_TV_title);
             PostItemImageView = itemView.findViewById(R.id.Post_item_ImageView);
 

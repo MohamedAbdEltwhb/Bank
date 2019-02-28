@@ -2,9 +2,7 @@ package com.example.mm.bank.ui.fragments.homeCycle.posts;
 
 public interface OnItemPostDetailsSend {
 
-    String POST_TITLE = "title";
+    String POST_ID = "id";
 
-    String THUMBNAIL_FULL_PATH = "thumbnail";
-
-    void onSentItemDetails(String title, String thumbnailFullPath);
+    void onSentItemDetails(int id);
 }

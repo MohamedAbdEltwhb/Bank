@@ -25,13 +25,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <com.example.mm.bank.ui.custom.LikeViewCheckBox
                 android:id="@+id/item_posts_Like_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:scaleType="center"
-                android:src="@drawable/ic_like_a" />
+                android:background="@drawable/background_chickbox_view"
+                android:button="@null" />
 
         </FrameLayout>
 

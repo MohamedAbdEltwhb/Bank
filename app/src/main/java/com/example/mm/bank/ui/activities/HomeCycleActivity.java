@@ -173,13 +173,13 @@ public class HomeCycleActivity extends AppCompatActivity
         finish();
     }
 
+
     @Override
-    public void onSentItemDetails(String title, String thumbnailFullPath) {
+    public void onSentItemDetails(int id) {
         PostsDetailsFragment detailsFragment = new PostsDetailsFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString(POST_TITLE, title);
-        bundle.putString(THUMBNAIL_FULL_PATH, thumbnailFullPath);
+        bundle.putInt(POST_ID, id);
         detailsFragment.setArguments(bundle);
 
         HelperMethod.replaceFragments(detailsFragment,
@@ -188,13 +188,4 @@ public class HomeCycleActivity extends AppCompatActivity
                 null,
                 null);
     }
-
-//    private void addNewNavFragments(){
-//        HelperMethod.replaceFragments(
-//                new AboutApplicationFragment(),
-//                getSupportFragmentManager(),
-//                R.id.Home_Cycle_FL_Fragment_Container,
-//                null,
-//                null);
-//    }
 }

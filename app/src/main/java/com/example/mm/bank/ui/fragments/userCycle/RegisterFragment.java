@@ -1,7 +1,6 @@
 package com.example.mm.bank.ui.fragments.userCycle;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -15,18 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mm.bank.R;
-import com.example.mm.bank.adapter.spinner.SpinnerCitiesAdapter;
-import com.example.mm.bank.adapter.spinner.SpinnerGovernmentsAdapter;
-import com.example.mm.bank.data.model.cities.Cities;
-import com.example.mm.bank.data.model.cities.CitiesData;
-import com.example.mm.bank.data.model.governorates.Governorates;
-import com.example.mm.bank.data.model.governorates.GovernoratesData;
 import com.example.mm.bank.data.model.regester.Register;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
 import com.example.mm.bank.ui.custom.CustomSpinnerItem;
 
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,10 +79,15 @@ public class RegisterFragment extends Fragment {
 
         toolbarTextTitle.setText(getResources().getString(R.string.register_toolbar_title));
 
+        /* Set Blood Type to Spinner*/
         HelperMethod.setSpinnerBloodType(getContext(), RegisterFragmentSpinnerBloodType);
 
-        getGovernments();
-        getCities();
+        /* Get Governments Using Api Call*/
+        HelperMethod.getGovernments(getContext(), RegisterFragmentSpinnerGovernments);
+
+        /* Get Cities Using Api Call*/
+        mCitiesId = HelperMethod.getCities(getContext(), RegisterFragmentSpinnerCities);
+
 
         RegisterFragmentSpinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -106,15 +106,19 @@ public class RegisterFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Extract Input ...>> Name & Email & BirthDate &
+     * phone & Last Blood Donation & Password & rePassword
+     */
     private void extractInputChickValidation(String citiesId, String bloodType) {
-        String name = RegisterFragmentTiLName.getEditText().getText().toString();
-        String email = RegisterFragmentTiLEmail.getEditText().getText().toString().trim();
-        String birthDate = RegisterFragmentTiLBirthDate.getEditText().getText().toString().trim();
+        String name = Objects.requireNonNull(RegisterFragmentTiLName.getEditText()).getText().toString();
+        String email = Objects.requireNonNull(RegisterFragmentTiLEmail.getEditText()).getText().toString().trim();
+        String birthDate = Objects.requireNonNull(RegisterFragmentTiLBirthDate.getEditText()).getText().toString().trim();
 
-        String phone = RegisterFragmentTiLPhone.getEditText().getText().toString().trim();
-        String lastBloodDonation = RegisterFragmentTiLLastBloodDonation.getEditText().getText().toString();
-        String password = RegisterFragmentTiLPassword.getEditText().getText().toString().trim();
-        String rePassword = RegisterFragmentTiLRePassword.getEditText().getText().toString().trim();
+        String phone = Objects.requireNonNull(RegisterFragmentTiLPhone.getEditText()).getText().toString().trim();
+        String lastBloodDonation = Objects.requireNonNull(RegisterFragmentTiLLastBloodDonation.getEditText()).getText().toString();
+        String password = Objects.requireNonNull(RegisterFragmentTiLPassword.getEditText()).getText().toString().trim();
+        String rePassword = Objects.requireNonNull(RegisterFragmentTiLRePassword.getEditText()).getText().toString().trim();
 
         if (!UserInputValidation.isValidName(name)) {
             RegisterFragmentTiLName.setError("Please Enter Correct Name..");
@@ -160,110 +164,25 @@ public class RegisterFragment extends Fragment {
 
         registerCall.enqueue(new Callback<Register>() {
             @Override
-            public void onResponse(Call<Register> call, Response<Register> response) {
+            public void onResponse(@NonNull Call<Register> call, @NonNull Response<Register> response) {
 
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
 
                         HelperMethod.replaceFragments(
                                 new LoginFragment(),
-                                getActivity().getSupportFragmentManager(),
+                                Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                                 R.id.User_Cycle_FL_Fragment_Container,
                                 null,
                                 null);
-                    } else if (response.body().getStatus() == 0) {
-                        Toast.makeText(getContext(), "0" + response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Register> call, Throwable t) {
-
-            }
-        });
-
-
-    }
-
-    /**
-     * Get Cities Using Api Call
-     */
-    private void getGovernments() {
-
-        Call<Governorates> call = RetrofitClient
-                .getInstance()
-                .getApiServices()
-                .getGovernments();
-
-        call.enqueue(new Callback<Governorates>() {
-            @Override
-            public void onResponse(Call<Governorates> call, Response<Governorates> response) {
-
-                if (response.isSuccessful()) {
-                    SpinnerGovernmentsAdapter Adapter = new SpinnerGovernmentsAdapter(getActivity(), response.body().getData());
-                    if (RegisterFragmentSpinnerGovernments != null) {
-                        RegisterFragmentSpinnerGovernments.setAdapter(Adapter);
-                        RegisterFragmentSpinnerGovernments.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                GovernoratesData data = (GovernoratesData) parent.getSelectedItem();
-                                Toast.makeText(getContext(), data.getName(), Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-
-                            }
-                        });
                     } else {
-
+                        Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<Governorates> call, Throwable t) {
-
-            }
-        });
-    }
-
-    /**
-     * Get Cities Using Api Call
-     */
-    private void getCities() {
-
-        Call<Cities> citiesCall = RetrofitClient
-                .getInstance()
-                .getApiServices()
-                .getCities(new CitiesData().getGovernorateId());
-
-        citiesCall.enqueue(new Callback<Cities>() {
-            @Override
-            public void onResponse(Call<Cities> call, Response<Cities> response) {
-                if (response.isSuccessful()) {
-                    SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getActivity(), response.body().getData());
-                    if (RegisterFragmentSpinnerCities != null) {
-                        RegisterFragmentSpinnerCities.setAdapter(citiesAdapter);
-                        RegisterFragmentSpinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                CitiesData data = (CitiesData) parent.getSelectedItem();
-                                mCitiesId = data.getId().toString();
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-
-                            }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Cities> call, Throwable t) {
+            public void onFailure(@NonNull Call<Register> call, Throwable t) {
 
             }
         });

@@ -57,12 +57,12 @@ public class PostsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        apiPostsCall();
+        getApiPostsCall();
 
         return view;
     }
 
-    private void apiPostsCall() {
+    private void getApiPostsCall() {
 
         Call<Posts> postsCall = RetrofitClient
                 .getInstance()
@@ -80,8 +80,7 @@ public class PostsFragment extends Fragment {
                         postsAdapter = new PostsFragmentAdapter(postsList, getContext(), new OnPostClickListener() {
                             @Override
                             public void setOnPostClickListener(int position) {
-                                mOnItemPostDetailsSend.onSentItemDetails(postsList.get(position).getTitle(),
-                                        postsList.get(position).getThumbnailFullPath());
+                                mOnItemPostDetailsSend.onSentItemDetails(postsList.get(position).getId());
                             }
                         });
                         PostsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -98,11 +97,6 @@ public class PostsFragment extends Fragment {
             }
         });
     }
-
-//    interface OnItemPostDetailsSend{
-//        void onSentItemDetails(String title, String thumbnailFullPath);
-//    }
-
 
     @Override
     public void onAttach(Context context) {

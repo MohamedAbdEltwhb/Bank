@@ -1,10 +1,13 @@
 package com.example.mm.bank.data.rest;
 
 import com.example.mm.bank.data.model.cities.Cities;
+import com.example.mm.bank.data.model.contact.ContactUs;
+import com.example.mm.bank.data.model.favourite_posts.FavouritePosts;
+import com.example.mm.bank.data.model.favourites_list.FavouritesList;
 import com.example.mm.bank.data.model.governorates.Governorates;
-import com.example.mm.bank.data.model.login.Login;
 import com.example.mm.bank.data.model.newPassword.NewPassword;
 import com.example.mm.bank.data.model.posts.Posts;
+import com.example.mm.bank.data.model.posts_details.PostsDetails;
 import com.example.mm.bank.data.model.regester.Register;
 import com.example.mm.bank.data.model.resetone.ResetPassword;
 
@@ -55,6 +58,24 @@ public interface ApiServices {
     @GET("posts")
     Call<Posts> getPosts(@Query("api_token") String api_token,
                          @Query("page") int page);
+
+    @GET("post")
+    Call<PostsDetails> getPostDetails(@Query("api_token") String apiToken,
+                                      @Query("post_id") Integer post_id);
+
+    @POST("post-toggle-favourite")
+    @FormUrlEncoded
+    Call<FavouritePosts> postToggleFavourite(@Field("post_id") int postId,
+                                             @Field("api_token") String apiToken);
+
+    @GET("my-favourites")
+    Call<FavouritesList> getFavouritesList(@Query("api_token") String apiToken);
+
+    @POST("contact")
+    @FormUrlEncoded
+    Call<ContactUs> contactUs(@Field("api_token") String apiToken,
+                              @Field("title") String title,
+                              @Field("message") String message);
 
 
 }
