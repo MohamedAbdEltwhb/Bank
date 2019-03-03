@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mm.bank.R;
-import com.example.mm.bank.data.model.resetone.ResetPassword;
+import com.example.mm.bank.data.model.user.resetone.ResetPassword;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;

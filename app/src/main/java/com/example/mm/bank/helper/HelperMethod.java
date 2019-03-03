@@ -120,8 +120,7 @@ public class HelperMethod {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     CitiesData data = (CitiesData) parent.getSelectedItem();
                                     citiesId = data.getId().toString();
-                                    Toast.makeText(context, citiesId, Toast.LENGTH_SHORT).show();
-
+                                    //Toast.makeText(context, citiesId, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override

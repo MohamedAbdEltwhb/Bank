@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.mm.bank.R;
-import com.example.mm.bank.data.model.newPassword.NewPassword;
+import com.example.mm.bank.data.model.user.newPassword.NewPassword;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;

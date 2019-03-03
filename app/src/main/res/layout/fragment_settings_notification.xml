@@ -71,14 +71,17 @@
                     android:weightSum="3">
 
                     <CheckBox
+                        android:id="@+id/CheckBox_A_plus"
                         style="@style/DetailText"
                         android:text="A+" />
 
                     <CheckBox
+                        android:id="@+id/CheckBox_A_minus"
                         style="@style/DetailText"
                         android:text="A-" />
 
                     <CheckBox
+                        android:id="@+id/CheckBox_O_plus"
                         style="@style/DetailText"
                         android:text="O+" />
 
@@ -93,14 +96,17 @@
                     android:weightSum="3">
 
                     <CheckBox
+                        android:id="@+id/CheckBox_O_minus"
                         style="@style/DetailText"
                         android:text="O-" />
 
                     <CheckBox
+                        android:id="@+id/CheckBox_AB_plus"
                         style="@style/DetailText"
                         android:text="AB+" />
 
                     <CheckBox
+                        android:id="@+id/CheckBox_AB_minus"
                         style="@style/DetailText"
                         android:text="AB-" />
 
@@ -144,14 +150,17 @@
                     android:weightSum="3">
 
                     <CheckBox
+                        android:id="@+id/Hurghada"
                         style="@style/DetailText"
                         android:text="Hurghada" />
 
                     <CheckBox
+                        android:id="@+id/Dakahlia"
                         style="@style/DetailText"
                         android:text="Dakahlia"/>
 
                     <CheckBox
+                        android:id="@+id/Minya"
                         style="@style/DetailText"
                         android:text="Minya" />
 
@@ -166,23 +175,26 @@
                     android:weightSum="3">
 
                     <CheckBox
+                        android:id="@+id/Kafr_El_Sheikh"
                         style="@style/DetailText"
-                        android:text="Kafr El Sheikh	" />
+                        android:text="Kafr El Sheikh" />
 
                     <CheckBox
+                        android:id="@+id/Cairo"
                         style="@style/DetailText"
                         android:text="Cairo" />
 
                     <CheckBox
+                        android:id="@+id/Sharqia"
                         style="@style/DetailText"
-                        android:text="Dakahlia" />
+                        android:text="Sharqia" />
 
                 </LinearLayout>
             </LinearLayout>
 
 
             <Button
-                android:id="@+id/Register_fragment_Sign_up_btn"
+                android:id="@+id/notificatoin_Settings_fragment_Save_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimens_xxl"

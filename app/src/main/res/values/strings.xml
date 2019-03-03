@@ -67,4 +67,6 @@
     <string name="log_out">Log Out</string>
     <string name="message_title">Message Title</string>
     <string name="your_message">Your Message</string>
+    <string name="title_activity_order_request_information">Map</string>
+    <string name="modify">Modify</string>
 </resources>

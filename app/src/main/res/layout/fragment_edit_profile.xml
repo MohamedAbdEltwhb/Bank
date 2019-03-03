@@ -1,14 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash"
     tools:context=".ui.fragments.homeCycle.EditProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimens_xl">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/EditProfile_Fragment_TiL_Name"
+                style="@style/AppTextInputLayoutStyle">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_name"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/EditProfile_Fragment_TiL_Email"
+                style="@style/AppTextInputLayoutStyle">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_email"
+                    android:inputType="textEmailAddress" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/EditProfile_Fragment_TiL_BirthDate"
+                style="@style/AppTextInputLayoutStyle">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:drawableEnd="@drawable/ic_pirth_date"
+                    android:hint="@string/register_input_your_birth_date" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/EditProfile_Fragment_Spinner_Blood_Type"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:background="@drawable/shape_et"
+                android:singleLine="true" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/EditProfile_Fragment_TiL_Last_Blood_Donation"
+                style="@style/AppTextInputLayoutStyle">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:drawableEnd="@drawable/ic_pirth_date"
+                    android:hint="@string/register_input_last_date_for_blood_donation" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/EditProfile_Fragment_Spinner_Governments"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:background="@drawable/shape_et"
+                android:singleLine="true" />
+
+            <Spinner
+                android:id="@+id/EditProfile_Fragment_Spinner_Cities"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginEnd="@dimen/dimens_l"
+                android:layout_marginStart="@dimen/dimens_l"
+                android:layout_marginTop="@dimen/dimens_l"
+                android:background="@drawable/shape_et"
+                android:singleLine="true" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/EditProfile_Fragment_TiL_Phone"
+                style="@style/AppTextInputLayoutStyle">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_phone"
+                    android:inputType="phone" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/EditProfile_Fragment_TiL_Password"
+                style="@style/AppTextInputLayoutStyle">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/register_input_password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/EditProfile_Fragment_TiL_Re_Password"
+                style="@style/AppTextInputLayoutStyle">
+
+                <android.support.design.widget.TextInputEditText
+                    style="@style/AppTextInputEditTextStyle"
+                    android:hint="@string/re_password"
+                    android:inputType="textPassword" />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/EditProfile_fragment_Sign_up_btn"
+                style="@style/AppButtonStyle"
+                android:layout_marginTop="@dimen/dimens_m"
+                android:background="@color/grayColor"
+                android:text="@string/modify" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
+

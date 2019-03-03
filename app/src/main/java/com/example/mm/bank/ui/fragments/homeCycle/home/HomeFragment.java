@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.example.mm.bank.R;
 import com.example.mm.bank.adapter.HomeFragmentAdapter;
+import com.example.mm.bank.ui.fragments.homeCycle.order.OrdersFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.PostsFragment;
 
 import butterknife.BindView;

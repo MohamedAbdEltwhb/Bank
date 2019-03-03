@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mm.bank.R;
+import com.example.mm.bank.adapter.post.OnPostClickListener;
 import com.example.mm.bank.data.model.posts.PostsDatum;
 import com.example.mm.bank.ui.custom.LikeViewCheckBox;
 

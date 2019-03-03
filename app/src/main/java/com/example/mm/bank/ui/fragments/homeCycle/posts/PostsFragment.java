@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mm.bank.R;
-import com.example.mm.bank.adapter.OnPostClickListener;
-import com.example.mm.bank.adapter.PostsFragmentAdapter;
+import com.example.mm.bank.adapter.post.OnPostClickListener;
+import com.example.mm.bank.adapter.post.PostsFragmentAdapter;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.data.model.posts.PostsDatum;
 import com.example.mm.bank.data.model.posts.Posts;

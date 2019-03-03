@@ -21,11 +21,13 @@ import com.example.mm.bank.ui.fragments.homeCycle.FavoriteFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.NotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.SettingsNotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
+import com.example.mm.bank.ui.fragments.homeCycle.order.OrderRequestInformationActivity;
+import com.example.mm.bank.ui.fragments.homeCycle.order.SendDonationDetails;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.OnItemPostDetailsSend;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.PostsDetailsFragment;
 
 public class HomeCycleActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnItemPostDetailsSend {
+        implements NavigationView.OnNavigationItemSelectedListener, OnItemPostDetailsSend, SendDonationDetails {
 
 
     @Override
@@ -187,5 +189,27 @@ public class HomeCycleActivity extends AppCompatActivity
                 R.id.Home_Cycle_FL_Fragment_Container,
                 null,
                 null);
+    }
+
+    @Override
+    public void setDonationDetails(String id) {
+        Intent intent = new Intent(this, OrderRequestInformationActivity.class);
+        intent.putExtra(CLINT_ID, id);
+        startActivity(intent);
+
+
+
+//        OrderRequestInformationFragment requestInformationFragment = new OrderRequestInformationFragment();
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putString(CLINT_ID, id);
+//        requestInformationFragment.setArguments(bundle);
+//
+//        HelperMethod.replaceFragments(
+//                requestInformationFragment,
+//                getSupportFragmentManager(),
+//                R.id.Home_Cycle_FL_Fragment_Container,
+//                null,
+//                null);
     }
 }

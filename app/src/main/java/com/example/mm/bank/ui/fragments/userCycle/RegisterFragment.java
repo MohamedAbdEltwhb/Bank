@@ -14,7 +14,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mm.bank.R;
-import com.example.mm.bank.data.model.regester.Register;
+import com.example.mm.bank.adapter.spinner.SpinnerCitiesAdapter;
+import com.example.mm.bank.data.model.cities.Cities;
+import com.example.mm.bank.data.model.cities.CitiesData;
+import com.example.mm.bank.data.model.user.regester.Register;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.UserInputValidation;
@@ -86,7 +89,7 @@ public class RegisterFragment extends Fragment {
         HelperMethod.getGovernments(getContext(), RegisterFragmentSpinnerGovernments);
 
         /* Get Cities Using Api Call*/
-        mCitiesId = HelperMethod.getCities(getContext(), RegisterFragmentSpinnerCities);
+        getCities();
 
 
         RegisterFragmentSpinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -183,6 +186,47 @@ public class RegisterFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<Register> call, Throwable t) {
+
+            }
+        });
+    }
+
+    /**
+     * Get Cities Using Api Call
+     */
+    public void getCities() {
+
+        Call<Cities> citiesCall = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .getCities(new CitiesData().getGovernorateId());
+
+        citiesCall.enqueue(new Callback<Cities>() {
+            @Override
+            public void onResponse(@NonNull Call<Cities> call, @NonNull final Response<Cities> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus() == 1){
+                        SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getContext(), response.body().getData());
+                        if (RegisterFragmentSpinnerCities != null) {
+                            RegisterFragmentSpinnerCities.setAdapter(citiesAdapter);
+                            RegisterFragmentSpinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    CitiesData data = (CitiesData) parent.getSelectedItem();
+                                    mCitiesId = data.getId().toString();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<Cities> call, @NonNull Throwable t) {
 
             }
         });

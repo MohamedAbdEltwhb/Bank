@@ -3,7 +3,7 @@ package com.example.mm.bank.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.mm.bank.data.model.regester.RegisterClient;
+import com.example.mm.bank.data.model.user.regester.RegisterClient;
 
 import static com.example.mm.bank.helper.Constant.API_TOKEN;
 import static com.example.mm.bank.helper.Constant.BIRTH_DATE;
