@@ -8,6 +8,10 @@ public class CustomSpinnerItem {
         this.spinnerItemName = spinnerItemName;
     }
 
+    public void setSpinnerItemName(String spinnerItemName) {
+        this.spinnerItemName = spinnerItemName;
+    }
+
     public String getSpinnerItemName() {
         return spinnerItemName;
     }

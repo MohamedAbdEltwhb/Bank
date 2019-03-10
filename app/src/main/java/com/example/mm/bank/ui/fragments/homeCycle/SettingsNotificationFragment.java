@@ -2,6 +2,7 @@ package com.example.mm.bank.ui.fragments.homeCycle;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.example.mm.bank.R;
+import com.example.mm.bank.helper.BackPressedListener;
+import com.example.mm.bank.helper.HelperMethod;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
+import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +54,15 @@ public class SettingsNotificationFragment extends Fragment {
     CheckBox Cairo;
     @BindView(R.id.Sharqia)
     CheckBox Sharqia;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /* Configure Back Pressed Listener Button */
+        HelperMethod.onBackPressedListener(getContext(), getActivity());
+    }
 
     public SettingsNotificationFragment() {
         // Required empty public constructor

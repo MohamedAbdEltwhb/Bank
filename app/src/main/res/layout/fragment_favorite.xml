@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/BackgroundGrayColor"
-    tools:context=".ui.fragments.homeCycle.FavoriteFragment">
+    tools:context=".ui.fragments.homeCycle.posts.FavoriteFragment">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/FavoritePostRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

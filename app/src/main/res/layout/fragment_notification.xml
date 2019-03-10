@@ -7,6 +7,8 @@
     tools:context=".ui.fragments.homeCycle.NotificationFragment">
 
 
-    <include layout="@layout/item_notification_layout"/>
-
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/NotificationFragmentRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 </FrameLayout>

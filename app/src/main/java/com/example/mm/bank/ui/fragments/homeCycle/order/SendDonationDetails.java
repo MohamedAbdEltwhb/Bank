@@ -4,5 +4,5 @@ public interface SendDonationDetails {
 
     String CLINT_ID = "id";
 
-    void setDonationDetails (String id);
+    void setDonationDetails (Integer id);
 }

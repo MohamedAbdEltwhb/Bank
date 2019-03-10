@@ -14,7 +14,7 @@ public class Register {
     private String msg;
     @SerializedName("data")
     @Expose
-    private RegisterData registerData;
+    private RegisterData data;
 
     public Integer getStatus() {
         return status;
@@ -32,12 +32,12 @@ public class Register {
         this.msg = msg;
     }
 
-    public RegisterData getRegisterData() {
-        return registerData;
+    public RegisterData getData() {
+        return data;
     }
 
-    public void setRegisterData(RegisterData registerData) {
-        this.registerData = registerData;
+    public void setData(RegisterData data) {
+        this.data = data;
     }
 
 }

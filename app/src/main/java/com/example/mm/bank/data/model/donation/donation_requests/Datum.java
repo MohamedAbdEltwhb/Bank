@@ -1,6 +1,7 @@
 
 package com.example.mm.bank.data.model.donation.donation_requests;
 
+import com.example.mm.bank.data.model.blood_type.BloodDatum;
 import com.example.mm.bank.data.model.cities.CitiesData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -25,9 +26,9 @@ public class Datum {
     @SerializedName("patient_age")
     @Expose
     private String patientAge;
-    @SerializedName("blood_type")
+    @SerializedName("blood_type_id")
     @Expose
-    private String bloodType;
+    private String bloodTypeId;
     @SerializedName("bags_num")
     @Expose
     private String bagsNum;
@@ -48,16 +49,19 @@ public class Datum {
     private String notes;
     @SerializedName("latitude")
     @Expose
-    private Object latitude;
+    private String latitude;
     @SerializedName("longitude")
     @Expose
-    private Object longitude;
+    private String longitude;
     @SerializedName("city")
     @Expose
     private CitiesData city;
     @SerializedName("client")
     @Expose
     private Client client;
+    @SerializedName("blood_type")
+    @Expose
+    private BloodDatum bloodType;
 
     public Integer getId() {
         return id;
@@ -107,12 +111,12 @@ public class Datum {
         this.patientAge = patientAge;
     }
 
-    public String getBloodType() {
-        return bloodType;
+    public String getBloodTypeId() {
+        return bloodTypeId;
     }
 
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
+    public void setBloodTypeId(String bloodTypeId) {
+        this.bloodTypeId = bloodTypeId;
     }
 
     public String getBagsNum() {
@@ -163,19 +167,19 @@ public class Datum {
         this.notes = notes;
     }
 
-    public Object getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Object latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public Object getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Object longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
@@ -193,6 +197,14 @@ public class Datum {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public BloodDatum getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodDatum bloodType) {
+        this.bloodType = bloodType;
     }
 
 }

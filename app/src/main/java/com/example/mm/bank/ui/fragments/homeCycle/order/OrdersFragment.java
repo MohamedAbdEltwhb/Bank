@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,15 +19,20 @@ import android.widget.Toast;
 import com.example.mm.bank.R;
 import com.example.mm.bank.adapter.order.OnOrderDetailsButtonClickListener;
 import com.example.mm.bank.adapter.order.OrderFragmentAdapter;
+import com.example.mm.bank.adapter.spinner.CustomSpinnerAdapter;
 import com.example.mm.bank.adapter.spinner.SpinnerCitiesAdapter;
 import com.example.mm.bank.data.local.SharedPrefManager;
+import com.example.mm.bank.data.model.blood_type.BloodDatum;
+import com.example.mm.bank.data.model.blood_type.BloodType;
 import com.example.mm.bank.data.model.cities.Cities;
 import com.example.mm.bank.data.model.cities.CitiesData;
 import com.example.mm.bank.data.model.donation.donation_requests.Datum;
 import com.example.mm.bank.data.model.donation.donation_requests.DonationRequests;
+import com.example.mm.bank.data.model.donation.donation_requests_filter.DonationRequestsFilter;
 import com.example.mm.bank.data.rest.RetrofitClient;
+import com.example.mm.bank.helper.BackPressedListener;
 import com.example.mm.bank.helper.HelperMethod;
-import com.example.mm.bank.ui.custom.CustomSpinnerItem;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.fragments.homeCycle.home.NewRequestFragment;
 
 import java.util.List;
@@ -57,11 +63,31 @@ public class OrdersFragment extends Fragment {
 
     private String citiesID;
     private String blood_Type;
+
     private SendDonationDetails sendDonationDetails;
+
+    /**
+     * Configure Back Pressed Listener Button
+     */
+    public void onBackPressedListener() {
+        ((HomeCycleActivity) Objects.requireNonNull(getActivity()))
+                .setOnBackPressedListener(new BackPressedListener(getActivity()) {
+            @Override
+            public void doBack() {
+                getActivity().moveTaskToBack(true);
+            }
+        });
+    }
 
 
     public OrdersFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        onBackPressedListener();
     }
 
     @Override
@@ -71,44 +97,88 @@ public class OrdersFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         /* Set Blood Type to Spinner*/
-        HelperMethod.setSpinnerBloodType(getContext(), orderCustomSpinnerBloodType);
+        getSpinnerBloodTypes();
 
         /* Get Cities Using Api Call*/
-        getCities();
+        getSpinnerCities();
 
-        orderCustomSpinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CustomSpinnerItem item = (CustomSpinnerItem) parent.getSelectedItem();
-                blood_Type = item.getSpinnerItemName();
-            }
+        /* Get All Donation Requests Using API Call */
+        getDonationApiRequests(SharedPrefManager.getInstance(getContext()).getApiToken(), 1);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         return view;
     }
 
     private void chickCityIdAndBloodType(String citiesId, String bloodType) {
+        getDonationApiRequestsFilter(
+                SharedPrefManager.getInstance(getContext()).getApiToken(),
+                bloodType,
+                citiesId,
+                1
+        );
 
-        if (citiesId == null) {
-            Toast.makeText(getContext(), "Please Chose Your Cities Name..", Toast.LENGTH_SHORT).show();
-        } else if (bloodType.isEmpty()) {
-            Toast.makeText(getContext(), "Please Chose Your Blood Type..", Toast.LENGTH_SHORT).show();
-        } else {
-            getDonationApiRequests(SharedPrefManager.getInstance(getContext()).getApiToken(), bloodType, citiesId);
-        }
 
     }
 
-    private void getDonationApiRequests(String apiToken, String bloodType, String citiesId) {
+    /**
+     * Get Filter Donation Requests Using API Call
+     *
+     * @param apiToken
+     * @param bloodType
+     * @param cityId
+     * @param page
+     */
+    private void getDonationApiRequestsFilter(String apiToken, String bloodType, String cityId, int page) {
+
+        Toast.makeText(getContext(), bloodType, Toast.LENGTH_SHORT).show();
+        Call<DonationRequestsFilter> donationRequestsFilterCall = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .donationRequestsFilterCall(apiToken, bloodType, cityId, page);
+
+        donationRequestsFilterCall.enqueue(new Callback<DonationRequestsFilter>() {
+            @Override
+            public void onResponse(Call<DonationRequestsFilter> call, Response<DonationRequestsFilter> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus() == 1) {
+
+                        orderData = response.body().getData().getData();
+                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                        OrderRecyclerView.setLayoutManager(mLayoutManager);
+
+                        OrderFragmentAdapter adapter = new OrderFragmentAdapter(getContext(), orderData,
+                                new OnOrderDetailsButtonClickListener() {
+                                    @Override
+                                    public void setOrderDetailsClick(int position) {
+                                        sendDonationDetails.setDonationDetails(orderData.get(position).getId());
+                                    }
+                                });
+                        OrderRecyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DonationRequestsFilter> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+    /**
+     * Get All Donation Requests Using API Call
+     *
+     * @param apiToken
+     * @param page
+     */
+    private void getDonationApiRequests(String apiToken, int page) {
         Call<DonationRequests> donationRequestsCall = RetrofitClient
                 .getInstance()
                 .getApiServices()
-                .donationRequestsCall(apiToken, bloodType, citiesId);
+                .donationRequestsCall(apiToken, page);
         donationRequestsCall.enqueue(new Callback<DonationRequests>() {
             @Override
             public void onResponse(Call<DonationRequests> call, final Response<DonationRequests> response) {
@@ -116,14 +186,16 @@ public class OrdersFragment extends Fragment {
                     if (response.body().getStatus() == 1) {
 
                         orderData = response.body().getData().getData();
-                        OrderRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                        OrderRecyclerView.setLayoutManager(mLayoutManager);
+
                         OrderFragmentAdapter adapter = new OrderFragmentAdapter(getContext(), orderData,
                                 new OnOrderDetailsButtonClickListener() {
-                            @Override
-                            public void setOrderDetailsClick(int position) {
-                                sendDonationDetails.setDonationDetails(orderData.get(position).getClientId());
-                            }
-                        });
+                                    @Override
+                                    public void setOrderDetailsClick(int position) {
+                                        sendDonationDetails.setDonationDetails(orderData.get(position).getId());
+                                    }
+                                });
                         OrderRecyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     }
@@ -138,38 +210,41 @@ public class OrdersFragment extends Fragment {
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        Activity activity = (Activity) context;
-        sendDonationDetails = (SendDonationDetails) activity;
-    }
-
     /**
-     * Get Cities Using Api Call
+     * Get Blood Types Using Api Call
      */
-    public void getCities() {
+    private void getSpinnerBloodTypes() {
 
-        Call<Cities> citiesCall = RetrofitClient
+        Call<BloodType> call = RetrofitClient
                 .getInstance()
                 .getApiServices()
-                .getCities(new CitiesData().getGovernorateId());
+                .getBloodTypes();
 
-        citiesCall.enqueue(new Callback<Cities>() {
+        call.enqueue(new Callback<BloodType>() {
             @Override
-            public void onResponse(@NonNull Call<Cities> call, @NonNull final Response<Cities> response) {
+            public void onResponse(@NonNull Call<BloodType> call, @NonNull final Response<BloodType> response) {
+
                 if (response.isSuccessful()) {
-                    if (response.body().getStatus() == 1){
-                        SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getContext(), response.body().getData());
-                        if (orderCustomSpinnerCities != null) {
-                            orderCustomSpinnerCities.setAdapter(citiesAdapter);
-                            orderCustomSpinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                    if (response.body().getStatus() == 1) {
+                        CustomSpinnerAdapter Adapter = new CustomSpinnerAdapter(getContext(), response.body().getData());
+                        if (orderCustomSpinnerBloodType != null) {
+                            orderCustomSpinnerBloodType.setAdapter(Adapter);
+                            orderCustomSpinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    CitiesData data = (CitiesData) parent.getSelectedItem();
-                                    citiesID  = data.getId().toString();
+                                    BloodDatum bloodDatum = (BloodDatum) parent.getSelectedItem();
+                                    blood_Type = bloodDatum.getId().toString();
+                                    //Toast.makeText(getContext(), blood_Type, Toast.LENGTH_SHORT).show();
 
+//                                    //mBloodTypeItemPosition = data.getId();
+//                                    //mBloodTypeItemPosition = orderCustomSpinnerBloodType.getSelectedItemPosition();
+//                                    CustomSpinnerItem item = (CustomSpinnerItem) parent.getSelectedItem();
+//                                    blood_Type = item.getSpinnerItemName();
+
+//                                    com.example.mm.bank.data.model.blood_type.BloodDatum item =
+//                                            (com.example.mm.bank.data.model.blood_type.BloodDatum) parent.getSelectedItem();
+//                                    blood_Type = item.getId().toString();
                                 }
 
                                 @Override
@@ -181,11 +256,62 @@ public class OrdersFragment extends Fragment {
                     }
                 }
             }
+
+            @Override
+            public void onFailure(@NonNull Call<BloodType> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    /**
+     * Get Cities Using Api Call
+     */
+    public void getSpinnerCities() {
+
+        Call<Cities> citiesCall = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .getCities(new CitiesData().getGovernorateId());
+
+        citiesCall.enqueue(new Callback<Cities>() {
+            @Override
+            public void onResponse(@NonNull Call<Cities> call, @NonNull final Response<Cities> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus() == 1) {
+                        SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getContext(), response.body().getData());
+                        if (orderCustomSpinnerCities != null) {
+                            orderCustomSpinnerCities.setAdapter(citiesAdapter);
+                            orderCustomSpinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    CitiesData data = (CitiesData) parent.getSelectedItem();
+                                    citiesID = data.getId().toString();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
             @Override
             public void onFailure(@NonNull Call<Cities> call, @NonNull Throwable t) {
 
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        Activity activity = (Activity) context;
+        sendDonationDetails = (SendDonationDetails) activity;
     }
 
     @Override
@@ -199,9 +325,9 @@ public class OrdersFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.frameLayoutSearch:
-               if (citiesID != null && blood_Type != null) {
-                    chickCityIdAndBloodType(citiesID, blood_Type);
-               }
+
+                /* Get Filter Donation Requests Using API Call */
+                chickCityIdAndBloodType(citiesID, blood_Type);
                 break;
 
             case R.id.Posts_Fragment_FAB:

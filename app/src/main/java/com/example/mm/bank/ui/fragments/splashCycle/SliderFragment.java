@@ -14,6 +14,7 @@ import com.example.mm.bank.adapter.SliderPagerAdapter;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.activities.UserCycleActivity;
+import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +45,7 @@ public class SliderFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_slider, container, false);
         unbinder = ButterKnife.bind(this, view);
+        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.transparentColor));
 
         SliderPagerAdapter sliderPagerAdapter = new SliderPagerAdapter(getContext());
         SliderFragmentViewPager.setAdapter(sliderPagerAdapter);

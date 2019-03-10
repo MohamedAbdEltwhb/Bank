@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -20,16 +23,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activities.SplashCycleActivity">
+        <activity android:name=".ui.activities.SplashCycleActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.UserCycleActivity" />
+
+        <activity android:name=".ui.activities.UserCycleActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
+
         <activity
             android:name=".ui.activities.HomeCycleActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_home_cycle"
             android:theme="@style/AppTheme" />
         <!--
@@ -46,7 +54,8 @@
 
         <activity
             android:name=".ui.fragments.homeCycle.order.OrderRequestInformationActivity"
-            android:label="@string/title_activity_order_request_information"></activity>
+            android:label="@string/title_activity_order_request_information"
+            android:configChanges="orientation|screenSize|keyboardHidden"></activity>
     </application>
 
 </manifest>

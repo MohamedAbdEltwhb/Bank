@@ -40,10 +40,10 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
     public void onBindViewHolder(@NonNull OrderFragmentHolder holder, int position) {
         Datum order = orderData.get(position);
 
-        holder.orderItemBloodTypeTV.setText(order.getBloodType());
+        holder.orderItemBloodTypeTV.setText(order.getBloodType().getName());
         holder.orderItemStatusNameTV.setText(order.getPatientName());
         holder.orderItemHospitalTV.setText(order.getHospitalName());
-        holder.orderItemCityTV.setText(order.getCityId());
+        holder.orderItemCityTV.setText(order.getCity().getName());
         //order.getClientId();
 
     }

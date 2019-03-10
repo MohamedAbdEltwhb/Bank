@@ -47,11 +47,14 @@ public class CustomSpinnerItemsData {
 
 
 
+
     public static List<CustomSpinnerItem> getmCustomListBloodType() {
         return mCustomListBloodType;
     }
 
-//    public static ArrayList<CustomSpinnerItem> getmCustomListCities() {
+
+
+    //    public static ArrayList<CustomSpinnerItem> getmCustomListCities() {
 //        return mCustomListCities;
 //    }
 }

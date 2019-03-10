@@ -13,8 +13,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
-import com.example.mm.bank.data.model.favourite_posts.FavouritePosts;
-import com.example.mm.bank.data.model.posts.PostsDatum;
+import com.example.mm.bank.data.model.posts.post.PostsDatum;
+import com.example.mm.bank.data.model.posts.post_toggle_favourite.PostToggleFavourite;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.ui.custom.LikeViewCheckBox;
 
@@ -59,43 +59,37 @@ public class PostsFragmentAdapter extends RecyclerView.Adapter<PostsFragmentAdap
         holder.checkBoxLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Call<PostToggleFavourite> postToggleFavouriteCall = RetrofitClient
+                        .getInstance().getApiServices().postToggleFavourite(
+                                postsDatum.getId(), SharedPrefManager.getInstance(mContext).getApiToken()
+                );
 
-                Call<FavouritePosts> favouritePostsCall = RetrofitClient
-                        .getInstance()
-                        .getApiServices()
-                        .postToggleFavourite(postsDatum.getId(), SharedPrefManager.getInstance(mContext).getApiToken());
-                favouritePostsCall.enqueue(new Callback<FavouritePosts>() {
-                    @Override
-                    public void onResponse(Call<FavouritePosts> call, Response<FavouritePosts> response) {
-                        if (response.isSuccessful()) {
-                            if (response.body().getStatus() == 1) {
+                /** Check if the Post ChickBox is Checked Mack API Call Using {PostID & API Token} */
+                if (holder.checkBoxLike.isChecked()){
 
-                                notifyDataSetChanged();
-                                Toast.makeText(mContext, "" + postsDatum.getIsFavourite(), Toast.LENGTH_SHORT).show();
+                    postToggleFavouriteCall.enqueue(new Callback<PostToggleFavourite>() {
+                        @Override
+                        public void onResponse(Call<PostToggleFavourite> call, Response<PostToggleFavourite> response) {
 
-//                                if (holder.checkBoxLike.isChecked()) {
-//                                    postsDatum.setIsFavourite(true);
-//                                    notifyDataSetChanged();
-//                                    Toast.makeText(mContext, "" + postsDatum.getIsFavourite(), Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    postsDatum.setIsFavourite(false);
-//                                    notifyDataSetChanged();
-//                                    Toast.makeText(mContext, "" + postsDatum.getIsFavourite(), Toast.LENGTH_SHORT).show();
-//                                }
-                            } else {
-                                Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_LONG).show();
+                            if (response.isSuccessful()) {
+                                if (response.body().getStatus() == 1) {
+                                    notifyDataSetChanged();
+                                    Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+
+                                }else Toast.makeText(mContext, response.body().getMsg(), Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<FavouritePosts> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<PostToggleFavourite> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

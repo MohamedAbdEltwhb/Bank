@@ -10,12 +10,18 @@ import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.data.model.donation.donation_details.DonationDetails;
 import com.example.mm.bank.data.rest.RetrofitClient;
+import com.example.mm.bank.helper.BackPressedListener;
+import com.example.mm.bank.helper.HelperMethod;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
+import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,28 +53,33 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
 
     private double mLatitude;
     private double mLongitude;
-    private String clintId;
+    private Integer clintId;
     private GoogleMap mMap;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_request_information);
         ButterKnife.bind(this);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         Intent intent = getIntent();
-        clintId = intent.getStringExtra(CLINT_ID);
+        clintId = intent.getIntExtra(CLINT_ID, 0);
         if (clintId != null) {
             donationApiDetails(clintId);
         }
     }
 
-    private void donationApiDetails(String idClint) {
+    private void donationApiDetails(Integer idClint) {
         Call<DonationDetails> donationDetailsCall = RetrofitClient
                 .getInstance()
                 .getApiServices()
@@ -80,7 +91,7 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
                     if (response.body().getStatus() == 1) {
                         RequestFOrderTVNameValue.setText(response.body().getData().getPatientName());
                         RequestFOrderTVAgeValue.setText(response.body().getData().getPatientAge());
-                        RequestFOrderTVBloodTypeValue.setText(response.body().getData().getBloodType());
+                        RequestFOrderTVBloodTypeValue.setText(response.body().getData().getBloodType().getName());
                         RequestFOrderTVNumberBagsValue.setText(response.body().getData().getBagsNum());
                         RequestFOrderTVHospitalValue.setText(response.body().getData().getHospitalName());
                         RequestFOrderTVHospitalAddressValue.setText(response.body().getData().getHospitalAddress());
@@ -91,7 +102,6 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
                         mLongitude = Double.valueOf(response.body().getData().getLongitude());
 
                         Toast.makeText(OrderRequestInformationActivity.this, String.valueOf(mLatitude) + " / " + String.valueOf(mLongitude), Toast.LENGTH_SHORT).show();
-
                     }
                 }
             }
@@ -115,12 +125,19 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(mLongitude, mLatitude);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("My Place"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (mLatitude != 0 && mLongitude != 0) {
+            mMap = googleMap;
+
+            // Add a marker in Sydney and move the camera
+            LatLng sydney = new LatLng(mLongitude, mLatitude);
+
+            mMap.addMarker(new MarkerOptions().position(sydney).title("My Place"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        } else {
+            Toast.makeText(this, "" + mLatitude + "/" + mLongitude, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.RequestF_Order_Button_call)

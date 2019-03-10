@@ -30,7 +30,7 @@ public class SplashFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_splash, container, false);
-        //StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.transparentColor));
+        StatusBarUtil.setColor(getActivity(), getResources().getColor(R.color.transparentColor));
 
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -3,6 +3,7 @@ package com.example.mm.bank.ui.fragments.userCycle;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,15 +14,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mm.bank.helper.BackPressedListener;
 import com.example.mm.bank.R;
+import com.example.mm.bank.adapter.spinner.CustomSpinnerAdapter;
 import com.example.mm.bank.adapter.spinner.SpinnerCitiesAdapter;
+import com.example.mm.bank.adapter.spinner.SpinnerGovernmentsAdapter;
+import com.example.mm.bank.data.model.blood_type.BloodDatum;
+import com.example.mm.bank.data.model.blood_type.BloodType;
 import com.example.mm.bank.data.model.cities.Cities;
 import com.example.mm.bank.data.model.cities.CitiesData;
+import com.example.mm.bank.data.model.governorates.Governorates;
+import com.example.mm.bank.data.model.governorates.GovernoratesData;
 import com.example.mm.bank.data.model.user.regester.Register;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
-import com.example.mm.bank.helper.UserInputValidation;
-import com.example.mm.bank.ui.custom.CustomSpinnerItem;
+import com.example.mm.bank.helper.utils.UserInputValidation;
+import com.example.mm.bank.ui.activities.UserCycleActivity;
 
 
 import java.util.Objects;
@@ -66,12 +74,36 @@ public class RegisterFragment extends Fragment {
     @BindView(R.id.toolbar_text_title)
     TextView toolbarTextTitle;
 
-    private String mCitiesId = null;
-    private String mBloodType = null;
+    private int mBloodTypeItemPosition;
+    private int mCityItemPosition;
 
 
     public RegisterFragment() {
         // Required empty public constructor
+    }
+
+    /**
+     * Configure Back Pressed Listener Button
+     */
+    public void configureBackPressedListener(){
+        ((UserCycleActivity) Objects.requireNonNull(getActivity()))
+                .setOnBackPressedListener(new BackPressedListener(getActivity()) {
+            @Override
+            public void doBack(){
+                HelperMethod.replaceFragments(
+                        new LoginFragment(),
+                        getActivity().getSupportFragmentManager(),
+                        R.id.User_Cycle_FL_Fragment_Container,
+                        null,
+                        null);
+            }
+        });
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        configureBackPressedListener();
     }
 
     @Override
@@ -83,28 +115,13 @@ public class RegisterFragment extends Fragment {
         toolbarTextTitle.setText(getResources().getString(R.string.register_toolbar_title));
 
         /* Set Blood Type to Spinner*/
-        HelperMethod.setSpinnerBloodType(getContext(), RegisterFragmentSpinnerBloodType);
+        getSpinnerBloodTypes();
 
         /* Get Governments Using Api Call*/
-        HelperMethod.getGovernments(getContext(), RegisterFragmentSpinnerGovernments);
+        getSpinnerGovernments();
 
         /* Get Cities Using Api Call*/
-        getCities();
-
-
-        RegisterFragmentSpinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CustomSpinnerItem item = (CustomSpinnerItem) parent.getSelectedItem();
-                mBloodType = item.getSpinnerItemName();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        getSpinnerCities();
 
         return view;
     }
@@ -113,7 +130,7 @@ public class RegisterFragment extends Fragment {
      * Extract Input ...>> Name & Email & BirthDate &
      * phone & Last Blood Donation & Password & rePassword
      */
-    private void extractInputChickValidation(String citiesId, String bloodType) {
+    private void extractInputChickValidation(int citiesId, int bloodType) {
         String name = Objects.requireNonNull(RegisterFragmentTiLName.getEditText()).getText().toString();
         String email = Objects.requireNonNull(RegisterFragmentTiLEmail.getEditText()).getText().toString().trim();
         String birthDate = Objects.requireNonNull(RegisterFragmentTiLBirthDate.getEditText()).getText().toString().trim();
@@ -156,8 +173,8 @@ public class RegisterFragment extends Fragment {
      * @param bloodType
      */
     private void doUserRegistration(String name, String email, String birthDate,
-                                    String citiesId, String phone, String lastBloodDonation,
-                                    String password, String rePassword, String bloodType) {
+                                    int citiesId, String phone, String lastBloodDonation,
+                                    String password, String rePassword, int bloodType) {
 
         final Call<Register> registerCall = RetrofitClient
                 .getInstance()
@@ -192,9 +209,53 @@ public class RegisterFragment extends Fragment {
     }
 
     /**
+     * Get Governments Using Api Call
+     */
+    private void getSpinnerGovernments() {
+
+        Call<Governorates> call = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .getGovernments();
+
+        call.enqueue(new Callback<Governorates>() {
+            @Override
+            public void onResponse(@NonNull Call<Governorates> call, @NonNull Response<Governorates> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus() == 1){
+                        SpinnerGovernmentsAdapter Adapter = new SpinnerGovernmentsAdapter(getContext(), response.body().getData());
+                        if (RegisterFragmentSpinnerGovernments != null) {
+                            RegisterFragmentSpinnerGovernments.setAdapter(Adapter);
+                            RegisterFragmentSpinnerGovernments.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    GovernoratesData data = (GovernoratesData) parent.getSelectedItem();
+                                    //mGovernmentItemPosition = data.getId();
+                                    //mGovernmentItemPosition = RegisterFragmentSpinnerGovernments.getSelectedItemPosition();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<Governorates> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    /**
      * Get Cities Using Api Call
      */
-    public void getCities() {
+    public void getSpinnerCities() {
 
         Call<Cities> citiesCall = RetrofitClient
                 .getInstance()
@@ -209,11 +270,58 @@ public class RegisterFragment extends Fragment {
                         SpinnerCitiesAdapter citiesAdapter = new SpinnerCitiesAdapter(getContext(), response.body().getData());
                         if (RegisterFragmentSpinnerCities != null) {
                             RegisterFragmentSpinnerCities.setAdapter(citiesAdapter);
+
                             RegisterFragmentSpinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     CitiesData data = (CitiesData) parent.getSelectedItem();
-                                    mCitiesId = data.getId().toString();
+                                    //mCityItemPosition = data.getId();
+                                    mCityItemPosition = RegisterFragmentSpinnerCities.getSelectedItemPosition();
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Cities> call, @NonNull Throwable t) {
+
+            }
+        });
+    }
+
+    /**
+     * Get Blood Types Using Api Call
+     */
+    private void getSpinnerBloodTypes() {
+
+        Call<BloodType> call = RetrofitClient
+                .getInstance()
+                .getApiServices()
+                .getBloodTypes();
+
+        call.enqueue(new Callback<BloodType>() {
+            @Override
+            public void onResponse(@NonNull Call<BloodType> call, @NonNull final Response<BloodType> response) {
+
+                if (response.isSuccessful()) {
+
+                    if (response.body().getStatus() == 1){
+                        CustomSpinnerAdapter Adapter = new CustomSpinnerAdapter(getContext(), response.body().getData());
+                        if (RegisterFragmentSpinnerBloodType != null) {
+                            RegisterFragmentSpinnerBloodType.setAdapter(Adapter);
+                            RegisterFragmentSpinnerBloodType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    BloodDatum data = (BloodDatum) parent.getSelectedItem();
+                                    //mBloodTypeItemPosition = data.getId();
+                                    mBloodTypeItemPosition = RegisterFragmentSpinnerBloodType.getSelectedItemPosition();
                                 }
 
                                 @Override
@@ -226,11 +334,12 @@ public class RegisterFragment extends Fragment {
                 }
             }
             @Override
-            public void onFailure(@NonNull Call<Cities> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<BloodType> call, @NonNull Throwable t) {
 
             }
         });
     }
+
 
     @Override
     public void onDestroyView() {
@@ -240,8 +349,8 @@ public class RegisterFragment extends Fragment {
 
     @OnClick(R.id.Register_fragment_Sign_up_btn)
     public void onViewClicked() {
-        if (mCitiesId != null && mBloodType != null) {
-            extractInputChickValidation(mCitiesId, mBloodType);
+        if (mCityItemPosition != -1 && mBloodTypeItemPosition != -1) {
+            extractInputChickValidation(mCityItemPosition, mBloodTypeItemPosition);
         }
     }
 

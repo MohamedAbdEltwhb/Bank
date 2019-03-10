@@ -6,15 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterClient {
 
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
-    @SerializedName("updated_at")
-    @Expose
-    private String updatedAt;
     @SerializedName("name")
     @Expose
     private String name;
@@ -33,54 +24,25 @@ public class RegisterClient {
     @SerializedName("donation_last_date")
     @Expose
     private String donationLastDate;
+    @SerializedName("blood_type_id")
+    @Expose
+    private String bloodTypeId;
+    @SerializedName("updated_at")
+    @Expose
+    private String updatedAt;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("city")
+    @Expose
+    private City city;
     @SerializedName("blood_type")
     @Expose
-    private String bloodType;
-    @SerializedName("is_active")
-    @Expose
-    private String isActive;
-    @SerializedName("pin_code")
-    @Expose
-    private String pinCode;
+    private BloodType bloodType;
 
-    public RegisterClient(Integer id, String createdAt, String updatedAt, String name, String email, String birthDate, String cityId, String phone, String donationLastDate, String bloodType, String isActive, String pinCode) {
-        this.id = id;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.name = name;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.cityId = cityId;
-        this.phone = phone;
-        this.donationLastDate = donationLastDate;
-        this.bloodType = bloodType;
-        this.isActive = isActive;
-        this.pinCode = pinCode;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 
     public String getName() {
         return name;
@@ -130,28 +92,52 @@ public class RegisterClient {
         this.donationLastDate = donationLastDate;
     }
 
-    public String getBloodType() {
+    public String getBloodTypeId() {
+        return bloodTypeId;
+    }
+
+    public void setBloodTypeId(String bloodTypeId) {
+        this.bloodTypeId = bloodTypeId;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
+    public BloodType getBloodType() {
         return bloodType;
     }
 
-    public void setBloodType(String bloodType) {
+    public void setBloodType(BloodType bloodType) {
         this.bloodType = bloodType;
-    }
-
-    public String getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
-    }
-
-    public String getPinCode() {
-        return pinCode;
-    }
-
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
     }
 
 }

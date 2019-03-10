@@ -2,6 +2,7 @@ package com.example.mm.bank.ui.fragments.homeCycle;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -14,6 +15,12 @@ import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.data.model.contact.ContactUs;
 import com.example.mm.bank.data.rest.RetrofitClient;
+import com.example.mm.bank.helper.BackPressedListener;
+import com.example.mm.bank.helper.HelperMethod;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
+import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +47,14 @@ public class ContactWithUsFragment extends Fragment {
     @BindView(R.id.Contact_Fragment_TiL_Message_Bode)
     TextInputLayout ContactFragmentTiLMessageBode;
     Unbinder unbinder;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /* Configure Back Pressed Listener Button */
+        HelperMethod.onBackPressedListener(getContext(), getActivity());
+    }
 
     public ContactWithUsFragment() {
         // Required empty public constructor

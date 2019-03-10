@@ -1,8 +1,13 @@
 package com.example.mm.bank.ui.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,13 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.mm.bank.helper.OnBackPressedListener;
 import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.helper.HelperMethod;
+import com.example.mm.bank.helper.server.NetworkStateChangeReceiver;
 import com.example.mm.bank.ui.fragments.homeCycle.AboutApplicationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.ContactWithUsFragment;
-import com.example.mm.bank.ui.fragments.homeCycle.EditProfileFragment;
-import com.example.mm.bank.ui.fragments.homeCycle.FavoriteFragment;
+import com.example.mm.bank.ui.fragments.userCycle.EditProfileFragment;
+import com.example.mm.bank.ui.fragments.homeCycle.posts.FavoriteFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.NotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.SettingsNotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
@@ -26,8 +33,16 @@ import com.example.mm.bank.ui.fragments.homeCycle.order.SendDonationDetails;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.OnItemPostDetailsSend;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.PostsDetailsFragment;
 
+import static com.example.mm.bank.helper.server.NetworkStateChangeReceiver.IS_NETWORK_AVAILABLE;
+
 public class HomeCycleActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnItemPostDetailsSend, SendDonationDetails {
+
+    protected OnBackPressedListener onBackPressedListener;
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
 
 
     @Override
@@ -36,6 +51,21 @@ public class HomeCycleActivity extends AppCompatActivity
         setContentView(R.layout.activity_home_cycle);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //__________________________________________________________________________________________________
+
+        IntentFilter intentFilter = new IntentFilter(NetworkStateChangeReceiver.NETWORK_AVAILABLE_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                boolean isNetworkAvailable = intent.getBooleanExtra(IS_NETWORK_AVAILABLE, false);
+                String networkStatus = isNetworkAvailable ? "connected" : "disconnected";
+
+                Snackbar.make(findViewById(R.id.activity_Home), "Network Status: " + networkStatus, Snackbar.LENGTH_LONG).show();
+            }
+        }, intentFilter);
+
+        //________________________________________________________________________________________________________________
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,11 +90,17 @@ public class HomeCycleActivity extends AppCompatActivity
                 null);
     }
 
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+
+        }else if (onBackPressedListener != null){
+            onBackPressedListener.doBack();
+
         } else {
             super.onBackPressed();
         }
@@ -192,11 +228,10 @@ public class HomeCycleActivity extends AppCompatActivity
     }
 
     @Override
-    public void setDonationDetails(String id) {
+    public void setDonationDetails(Integer id) {
         Intent intent = new Intent(this, OrderRequestInformationActivity.class);
         intent.putExtra(CLINT_ID, id);
         startActivity(intent);
-
 
 
 //        OrderRequestInformationFragment requestInformationFragment = new OrderRequestInformationFragment();

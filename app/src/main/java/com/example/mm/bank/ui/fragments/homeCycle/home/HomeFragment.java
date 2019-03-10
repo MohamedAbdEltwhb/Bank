@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mm.bank.helper.BackPressedListener;
 import com.example.mm.bank.R;
 import com.example.mm.bank.adapter.HomeFragmentAdapter;
+import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.fragments.homeCycle.order.OrdersFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.PostsFragment;
 
@@ -41,6 +43,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        //configureBackPressedListener();
     }
 
     @Override
@@ -49,7 +52,6 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
-
 
 
         setupViewPager(HomeFragmentViewPager);

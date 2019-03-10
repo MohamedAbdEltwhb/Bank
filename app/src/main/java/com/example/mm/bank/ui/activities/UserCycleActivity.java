@@ -3,11 +3,14 @@ package com.example.mm.bank.ui.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.mm.bank.helper.OnBackPressedListener;
 import com.example.mm.bank.R;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.ui.fragments.userCycle.LoginFragment;
 
 public class UserCycleActivity extends AppCompatActivity {
+
+    protected OnBackPressedListener onBackPressedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,4 +25,19 @@ public class UserCycleActivity extends AppCompatActivity {
                 null);
 
     }
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null) {
+            onBackPressedListener.doBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
 }

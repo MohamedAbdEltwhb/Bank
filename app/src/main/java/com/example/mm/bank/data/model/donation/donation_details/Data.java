@@ -1,6 +1,7 @@
 
 package com.example.mm.bank.data.model.donation.donation_details;
 
+import com.example.mm.bank.data.model.blood_type.BloodDatum;
 import com.example.mm.bank.data.model.cities.CitiesData;
 import com.example.mm.bank.data.model.donation.donation_requests.Client;
 import com.google.gson.annotations.Expose;
@@ -26,9 +27,9 @@ public class Data {
     @SerializedName("patient_age")
     @Expose
     private String patientAge;
-    @SerializedName("blood_type")
+    @SerializedName("blood_type_id")
     @Expose
-    private String bloodType;
+    private String bloodTypeId;
     @SerializedName("bags_num")
     @Expose
     private String bagsNum;
@@ -59,6 +60,9 @@ public class Data {
     @SerializedName("client")
     @Expose
     private Client client;
+    @SerializedName("blood_type")
+    @Expose
+    private BloodDatum bloodType;
 
     public Integer getId() {
         return id;
@@ -108,12 +112,12 @@ public class Data {
         this.patientAge = patientAge;
     }
 
-    public String getBloodType() {
-        return bloodType;
+    public String getBloodTypeId() {
+        return bloodTypeId;
     }
 
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
+    public void setBloodTypeId(String bloodTypeId) {
+        this.bloodTypeId = bloodTypeId;
     }
 
     public String getBagsNum() {
@@ -194,6 +198,14 @@ public class Data {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public BloodDatum getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodDatum bloodType) {
+        this.bloodType = bloodType;
     }
 
 }

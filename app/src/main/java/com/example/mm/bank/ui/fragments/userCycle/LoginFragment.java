@@ -4,6 +4,7 @@ package com.example.mm.bank.ui.fragments.userCycle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.mm.bank.helper.BackPressedListener;
 import com.example.mm.bank.R;
-import com.example.mm.bank.data.model.user.regester.Register;
+import com.example.mm.bank.data.model.user.login.Login;
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.HelperMethod;
-import com.example.mm.bank.helper.UserInputValidation;
+import com.example.mm.bank.helper.utils.UserInputValidation;
 import com.example.mm.bank.ui.activities.HomeCycleActivity;
+import com.example.mm.bank.ui.activities.UserCycleActivity;
 
 import java.util.Objects;
 
@@ -46,12 +49,31 @@ public class LoginFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        configureBackPressedListener();
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         return view;
+    }
+
+    /**
+     * Configure Back Pressed Listener Button
+     */
+    public void configureBackPressedListener(){
+        ((UserCycleActivity) getActivity()).setOnBackPressedListener(new BackPressedListener(getActivity()) {
+            @Override
+            public void doBack(){
+
+
+            }
+        });
     }
 
 
@@ -64,6 +86,8 @@ public class LoginFragment extends Fragment {
         } else if (!UserInputValidation.isValidPassword(password)) {
             LoginFragmentTiLPassword.setError("Please Enter Strong Password..");
         } else {
+
+            /*Do User Login Using Api Call*/
             doLoginUser(phone, password);
         }
     }
@@ -76,22 +100,37 @@ public class LoginFragment extends Fragment {
      */
     private void doLoginUser(String phone, String password) {
 
-        Call<Register> loginCall = RetrofitClient
+        Call<Login> loginCall = RetrofitClient
                 .getInstance()
                 .getApiServices()
                 .doUserLogin(phone, password);
 
-        loginCall.enqueue(new Callback<Register>() {
+        loginCall.enqueue(new Callback<Login>() {
             @Override
-            public void onResponse(@NonNull Call<Register> call, @NonNull Response<Register> response) {
+            public void onResponse(@NonNull Call<Login> call, @NonNull Response<Login> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
 
                         // Save All User PostsDetailsData in SharedPreferences
-                        getInstance(getContext()).saveUser(response.body().getRegisterData().getRegisterClient());
+                        getInstance(getContext()).saveUser(response.body().getData().getClient());
 
                         // Save User ApiToken in SharedPreferences
-                        getInstance(getContext()).setApiToken(response.body().getRegisterData().getApiToken());
+                        getInstance(getContext()).setApiToken(response.body().getData().getApiToken());
+
+                        // Save User Government ID in SharedPreferences
+                        getInstance(getContext()).setSelectedGovernmentItemPosition(
+                                Integer.valueOf(response.body().getData().getClient().getCity().getGovernorateId())
+                        );
+
+                        // Save User City ID in SharedPreferences
+                        getInstance(getContext()).setSelectedCityItemPosition(
+                                Integer.valueOf(response.body().getData().getClient().getCityId())
+                        );
+
+                        // Save User Blood Type in SharedPreferences
+                        getInstance(getContext()).setSelectedBloodItemPosition(
+                                Integer.valueOf(response.body().getData().getClient().getBloodTypeId())
+                        );
 
                         Intent toHome = new Intent(getActivity(), HomeCycleActivity.class);
                         toHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -101,15 +140,13 @@ public class LoginFragment extends Fragment {
 
 
                     } else {
-                        if (response.body() != null) {
-                            Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-                        }
+                        Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Register> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<Login> call, @NonNull Throwable t) {
 
             }
         });
