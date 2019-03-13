@@ -8,7 +8,6 @@ import com.example.mm.bank.data.model.donation.donation_details.DonationDetails;
 import com.example.mm.bank.data.model.donation.donation_requests.DonationRequests;
 import com.example.mm.bank.data.model.donation.donation_requests_filter.DonationRequestsFilter;
 import com.example.mm.bank.data.model.governorates.Governorates;
-import com.example.mm.bank.data.model.notifications.get_notifications_list.GetNotificationsList;
 import com.example.mm.bank.data.model.notifications.notifications_list.NotificationsList;
 import com.example.mm.bank.data.model.notifications.notifications_settings.NotificationsSettings;
 import com.example.mm.bank.data.model.posts.post.Posts;
@@ -155,11 +154,11 @@ public interface ApiServices {
     Call<DonationCreateRequest> donationRequestCreate(@Field("api_token") String apiToken,
                                                       @Field("patient_name") String patient_name,
                                                       @Field("patient_age") String patient_age,
-                                                      @Field("blood_type") String blood_type,
+                                                      @Field("blood_type_id") int blood_type,
                                                       @Field("bags_num") String bags_num,
                                                       @Field("hospital_name") String hospital_name,
                                                       @Field("hospital_address") String hospital_address,
-                                                      @Field("city_id") String city_id,
+                                                      @Field("city_id") int city_id,
                                                       @Field("phone") String phone,
                                                       @Field("notes") String notes,
                                                       @Field("latitude") Double latitude,

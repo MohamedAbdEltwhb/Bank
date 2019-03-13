@@ -1,6 +1,7 @@
 
 package com.example.mm.bank.data.model.donation.donation_create_request;
 
+import com.example.mm.bank.data.model.blood_type.BloodDatum;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,9 +13,9 @@ public class DonationRequest {
     @SerializedName("patient_age")
     @Expose
     private String patientAge;
-    @SerializedName("blood_type")
+    @SerializedName("blood_type_id")
     @Expose
-    private String bloodType;
+    private String bloodTypeId;
     @SerializedName("bags_num")
     @Expose
     private String bagsNum;
@@ -54,6 +55,9 @@ public class DonationRequest {
     @SerializedName("city")
     @Expose
     private City city;
+    @SerializedName("blood_type")
+    @Expose
+    private BloodDatum bloodType;
 
     public String getPatientName() {
         return patientName;
@@ -71,12 +75,12 @@ public class DonationRequest {
         this.patientAge = patientAge;
     }
 
-    public String getBloodType() {
-        return bloodType;
+    public String getBloodTypeId() {
+        return bloodTypeId;
     }
 
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
+    public void setBloodTypeId(String bloodTypeId) {
+        this.bloodTypeId = bloodTypeId;
     }
 
     public String getBagsNum() {
@@ -181,6 +185,14 @@ public class DonationRequest {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public BloodDatum getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(BloodDatum bloodType) {
+        this.bloodType = bloodType;
     }
 
 }

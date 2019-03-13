@@ -151,11 +151,11 @@
                     android:hint="@string/notes"
                     android:gravity="top"
                     android:paddingTop="@dimen/dimens_m"
-                    android:inputType="textPassword" />
+                    android:inputType="text" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/Register_fragment_Sign_up_btn"
+                android:id="@+id/NewRequest_fragment_send_request_btn"
                 style="@style/AppButtonStyle"
                 android:layout_marginTop="@dimen/dimens_m"
                 android:background="@color/grayColor"

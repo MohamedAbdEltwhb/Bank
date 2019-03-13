@@ -2,6 +2,7 @@ package com.example.mm.bank.ui.fragments.homeCycle.order;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -53,8 +56,9 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
 
     private double mLatitude;
     private double mLongitude;
-    private Integer clintId;
+    private int clintId = 0;
     private GoogleMap mMap;
+    private static final float DEFAULT_ZOOM = 15f;
 
     @Override
     public void onBackPressed() {
@@ -67,14 +71,9 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
         setContentView(R.layout.activity_order_request_information);
         ButterKnife.bind(this);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
         Intent intent = getIntent();
         clintId = intent.getIntExtra(CLINT_ID, 0);
-        if (clintId != null) {
+        if (clintId != 0) {
             donationApiDetails(clintId);
         }
     }
@@ -86,22 +85,24 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
                 .getDonationDetails(SharedPrefManager.getInstance(this).getApiToken(), idClint);
         donationDetailsCall.enqueue(new Callback<DonationDetails>() {
             @Override
-            public void onResponse(Call<DonationDetails> call, Response<DonationDetails> response) {
+            public void onResponse(@NonNull Call<DonationDetails> call, @NonNull Response<DonationDetails> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
-                        RequestFOrderTVNameValue.setText(response.body().getData().getPatientName());
-                        RequestFOrderTVAgeValue.setText(response.body().getData().getPatientAge());
-                        RequestFOrderTVBloodTypeValue.setText(response.body().getData().getBloodType().getName());
-                        RequestFOrderTVNumberBagsValue.setText(response.body().getData().getBagsNum());
-                        RequestFOrderTVHospitalValue.setText(response.body().getData().getHospitalName());
-                        RequestFOrderTVHospitalAddressValue.setText(response.body().getData().getHospitalAddress());
-                        RequestFOrderTVPhoneNumberValue.setText(response.body().getData().getPhone());
-                        RequestFOrderTVDetailsValue.setText(response.body().getData().getNotes());
+                        RequestFOrderTVNameValue.setText(Objects.requireNonNull(response.body()).getData().getPatientName());
+                        RequestFOrderTVAgeValue.setText(Objects.requireNonNull(response.body()).getData().getPatientAge());
+                        RequestFOrderTVBloodTypeValue.setText(Objects.requireNonNull(response.body()).getData().getBloodType().getName());
+                        RequestFOrderTVNumberBagsValue.setText(Objects.requireNonNull(response.body()).getData().getBagsNum());
+                        RequestFOrderTVHospitalValue.setText(Objects.requireNonNull(response.body()).getData().getHospitalName());
+                        RequestFOrderTVHospitalAddressValue.setText(Objects.requireNonNull(response.body()).getData().getHospitalAddress());
+                        RequestFOrderTVPhoneNumberValue.setText(Objects.requireNonNull(response.body()).getData().getPhone());
+                        RequestFOrderTVDetailsValue.setText(Objects.requireNonNull(response.body()).getData().getNotes());
 
-                        mLatitude = Double.valueOf(response.body().getData().getLatitude());
-                        mLongitude = Double.valueOf(response.body().getData().getLongitude());
+                        mLatitude = Double.valueOf(Objects.requireNonNull(response.body()).getData().getLatitude());
+                        mLongitude = Double.valueOf(Objects.requireNonNull(response.body()).getData().getLongitude());
 
-                        Toast.makeText(OrderRequestInformationActivity.this, String.valueOf(mLatitude) + " / " + String.valueOf(mLongitude), Toast.LENGTH_SHORT).show();
+                        if (mLatitude != 0 && mLongitude != 0){
+                            initMap();
+                        }
                     }
                 }
             }
@@ -113,30 +114,34 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
         });
     }
 
+    public void initMap() {
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
         if (mLatitude != 0 && mLongitude != 0) {
             mMap = googleMap;
+            Toast.makeText(this, "" + mLatitude + "/" + mLongitude, Toast.LENGTH_SHORT).show();
 
             // Add a marker in Sydney and move the camera
-            LatLng sydney = new LatLng(mLongitude, mLatitude);
+            LatLng latLng = new LatLng(mLongitude, mLatitude);
 
-            mMap.addMarker(new MarkerOptions().position(sydney).title("My Place"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_l);
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng)
+                    .title("My Place")
+                    .icon(icon);
 
-        } else {
-            Toast.makeText(this, "" + mLatitude + "/" + mLongitude, Toast.LENGTH_SHORT).show();
+            mMap.addMarker(markerOptions);
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
+
+
         }
     }
 

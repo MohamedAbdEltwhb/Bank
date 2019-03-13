@@ -15,40 +15,48 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-import com.example.mm.bank.helper.OnBackPressedListener;
 import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.helper.HelperMethod;
+import com.example.mm.bank.helper.OnBackPressedListener;
 import com.example.mm.bank.helper.server.NetworkStateChangeReceiver;
 import com.example.mm.bank.ui.fragments.homeCycle.AboutApplicationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.ContactWithUsFragment;
-import com.example.mm.bank.ui.fragments.userCycle.EditProfileFragment;
-import com.example.mm.bank.ui.fragments.homeCycle.posts.FavoriteFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.NotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.SettingsNotificationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.order.OrderRequestInformationActivity;
 import com.example.mm.bank.ui.fragments.homeCycle.order.SendDonationDetails;
+import com.example.mm.bank.ui.fragments.homeCycle.posts.FavoriteFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.OnItemPostDetailsSend;
 import com.example.mm.bank.ui.fragments.homeCycle.posts.PostsDetailsFragment;
+import com.example.mm.bank.ui.fragments.userCycle.EditProfileFragment;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.example.mm.bank.helper.server.NetworkStateChangeReceiver.IS_NETWORK_AVAILABLE;
 
-public class HomeCycleActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnItemPostDetailsSend, SendDonationDetails {
+public class HomeCycleActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        OnItemPostDetailsSend,
+        SendDonationDetails {
 
     protected OnBackPressedListener onBackPressedListener;
+    @BindView(R.id.TextView_ToolPar_title)
+    TextView TextViewToolParTitle;
 
     public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
         this.onBackPressedListener = onBackPressedListener;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_cycle);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -98,7 +106,7 @@ public class HomeCycleActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
 
-        }else if (onBackPressedListener != null){
+        } else if (onBackPressedListener != null) {
             onBackPressedListener.doBack();
 
         } else {
@@ -142,8 +150,8 @@ public class HomeCycleActivity extends AppCompatActivity
                         new EditProfileFragment(),
                         getSupportFragmentManager(),
                         R.id.Home_Cycle_FL_Fragment_Container,
-                        null,
-                        null);
+                        TextViewToolParTitle,
+                        "Edit Profile");
                 break;
 
             case R.id.nav_notification:
@@ -151,8 +159,8 @@ public class HomeCycleActivity extends AppCompatActivity
                         new SettingsNotificationFragment(),
                         getSupportFragmentManager(),
                         R.id.Home_Cycle_FL_Fragment_Container,
-                        null,
-                        null);
+                        TextViewToolParTitle,
+                        "Notification");
                 break;
 
             case R.id.nav_favorites:
@@ -160,16 +168,16 @@ public class HomeCycleActivity extends AppCompatActivity
                         new FavoriteFragment(),
                         getSupportFragmentManager(),
                         R.id.Home_Cycle_FL_Fragment_Container,
-                        null,
-                        null);
+                        TextViewToolParTitle,
+                        "Favorites");
                 break;
             case R.id.nav_home:
                 HelperMethod.replaceFragments(
                         new HomeFragment(),
                         getSupportFragmentManager(),
                         R.id.Home_Cycle_FL_Fragment_Container,
-                        null,
-                        null);
+                        TextViewToolParTitle,
+                        "Home");
                 break;
             case R.id.nav_instructions:
                 break;
@@ -178,16 +186,16 @@ public class HomeCycleActivity extends AppCompatActivity
                         new ContactWithUsFragment(),
                         getSupportFragmentManager(),
                         R.id.Home_Cycle_FL_Fragment_Container,
-                        null,
-                        null);
+                        TextViewToolParTitle,
+                        "Contact Us");
                 break;
             case R.id.nav_about_application:
                 HelperMethod.replaceFragments(
                         new AboutApplicationFragment(),
                         getSupportFragmentManager(),
                         R.id.Home_Cycle_FL_Fragment_Container,
-                        null,
-                        null);
+                        TextViewToolParTitle,
+                        "About Application");
                 break;
             case R.id.nav_evaluation:
                 break;

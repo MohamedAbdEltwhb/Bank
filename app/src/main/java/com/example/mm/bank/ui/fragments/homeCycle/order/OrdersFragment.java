@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,9 +34,11 @@ import com.example.mm.bank.data.model.donation.donation_requests_filter.Donation
 import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.helper.BackPressedListener;
 import com.example.mm.bank.helper.HelperMethod;
+import com.example.mm.bank.helper.utils.OnEndless;
 import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.fragments.homeCycle.home.NewRequestFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,13 +62,26 @@ public class OrdersFragment extends Fragment {
     Spinner orderCustomSpinnerCities;
     @BindView(R.id.Order_RecyclerView)
     RecyclerView OrderRecyclerView;
+    @BindView(R.id.Orders_fragment_ProgressBar)
+    ProgressBar OrdersFragmentProgressBar;
 
-    private List<Datum> orderData;
+    /* RecyclerView Adapter */
+    private OrderFragmentAdapter mOrderFragmentAdapter;
+
+    /* Interface to Communication Between {OrdersFragment & OrderRequestInformationActivity} */
+    private SendDonationDetails sendDonationDetails;
+
+    /* member variable for the OnEndless */
+    private OnEndless mOnEndless;
+
+    //var
+    private int maxPage = 0;
+    private boolean mFilterDisplay = false;
 
     private String citiesID;
     private String blood_Type;
 
-    private SendDonationDetails sendDonationDetails;
+    private List<Datum> orderData;
 
     /**
      * Configure Back Pressed Listener Button
@@ -72,11 +89,11 @@ public class OrdersFragment extends Fragment {
     public void onBackPressedListener() {
         ((HomeCycleActivity) Objects.requireNonNull(getActivity()))
                 .setOnBackPressedListener(new BackPressedListener(getActivity()) {
-            @Override
-            public void doBack() {
-                getActivity().moveTaskToBack(true);
-            }
-        });
+                    @Override
+                    public void doBack() {
+                        getActivity().moveTaskToBack(true);
+                    }
+                });
     }
 
 
@@ -102,22 +119,60 @@ public class OrdersFragment extends Fragment {
         /* Get Cities Using Api Call*/
         getSpinnerCities();
 
+        orderData = new ArrayList<>();
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        OrderRecyclerView.setLayoutManager(mLayoutManager);
+        OrderRecyclerView.setHasFixedSize(true);
+        OrderRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        /* Create Adapter */
+        mOrderFragmentAdapter = new OrderFragmentAdapter(getContext(), orderData,
+                new OnOrderDetailsButtonClickListener() {
+                    /* RecyclerView Item Click Listener Using OnOrderDetailsButtonClickListener Interface */
+                    @Override
+                    public void setOrderDetailsClick(int position) {
+                        sendDonationDetails.setDonationDetails(orderData.get(position).getId());
+                    }
+                });
+
+        mOnEndless = new OnEndless(mLayoutManager, 1) {
+            @Override
+            public void onLoadMore(int current_page) {
+                if (current_page < maxPage) {
+                    if (maxPage != 0) {
+                        if (!mFilterDisplay) {
+                            /* Set ProgressBar Visible */
+                            OrdersFragmentProgressBar.setVisibility(View.VISIBLE);
+
+                            /* Get All Donation Requests Using API Call */
+                            getDonationApiRequests(SharedPrefManager.getInstance(getContext()).getApiToken(), current_page);
+
+                        }if (mFilterDisplay){
+                            /* Set ProgressBar Visible */
+                            OrdersFragmentProgressBar.setVisibility(View.VISIBLE);
+
+                            /* Get Filter Donation Requests Using API Call */
+                            getDonationApiRequestsFilter(
+                                    SharedPrefManager.getInstance(getContext()).getApiToken(),
+                                    blood_Type,
+                                    citiesID,
+                                    current_page
+                            );
+                        }
+                    }
+                }
+            }
+        };
+        /* Adds the scroll listener to RecyclerView */
+        OrderRecyclerView.addOnScrollListener(mOnEndless);
+
+        /* Set Adapter */
+        OrderRecyclerView.setAdapter(mOrderFragmentAdapter);
+
         /* Get All Donation Requests Using API Call */
         getDonationApiRequests(SharedPrefManager.getInstance(getContext()).getApiToken(), 1);
 
-
         return view;
-    }
-
-    private void chickCityIdAndBloodType(String citiesId, String bloodType) {
-        getDonationApiRequestsFilter(
-                SharedPrefManager.getInstance(getContext()).getApiToken(),
-                bloodType,
-                citiesId,
-                1
-        );
-
-
     }
 
     /**
@@ -142,19 +197,31 @@ public class OrdersFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
 
-                        orderData = response.body().getData().getData();
-                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                        OrderRecyclerView.setLayoutManager(mLayoutManager);
+                        mFilterDisplay = true;
 
-                        OrderFragmentAdapter adapter = new OrderFragmentAdapter(getContext(), orderData,
-                                new OnOrderDetailsButtonClickListener() {
-                                    @Override
-                                    public void setOrderDetailsClick(int position) {
-                                        sendDonationDetails.setDonationDetails(orderData.get(position).getId());
-                                    }
-                                });
-                        OrderRecyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        /* get Max Page */
+                        maxPage = response.body().getData().getLastPage();
+
+                        /* Set ProgressBar In Visible */
+                        OrdersFragmentProgressBar.setVisibility(View.INVISIBLE);
+
+                        orderData.addAll(response.body().getData().getData());
+                        mOrderFragmentAdapter.notifyDataSetChanged();
+
+                       // orderData = response.body().getData().getData();
+
+//                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+//                        OrderRecyclerView.setLayoutManager(mLayoutManager);
+//
+//                        OrderFragmentAdapter adapter = new OrderFragmentAdapter(getContext(), orderData,
+//                                new OnOrderDetailsButtonClickListener() {
+//                                    @Override
+//                                    public void setOrderDetailsClick(int position) {
+//                                        sendDonationDetails.setDonationDetails(orderData.get(position).getId());
+//                                    }
+//                                });
+//                        OrderRecyclerView.setAdapter(adapter);
+//                        mOrderFragmentAdapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -181,33 +248,28 @@ public class OrdersFragment extends Fragment {
                 .donationRequestsCall(apiToken, page);
         donationRequestsCall.enqueue(new Callback<DonationRequests>() {
             @Override
-            public void onResponse(Call<DonationRequests> call, final Response<DonationRequests> response) {
+            public void onResponse(@NonNull Call<DonationRequests> call, @NonNull final Response<DonationRequests> response) {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
 
-                        orderData = response.body().getData().getData();
-                        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                        OrderRecyclerView.setLayoutManager(mLayoutManager);
+                        mFilterDisplay = false;
+                        maxPage = response.body().getData().getLastPage();
 
-                        OrderFragmentAdapter adapter = new OrderFragmentAdapter(getContext(), orderData,
-                                new OnOrderDetailsButtonClickListener() {
-                                    @Override
-                                    public void setOrderDetailsClick(int position) {
-                                        sendDonationDetails.setDonationDetails(orderData.get(position).getId());
-                                    }
-                                });
-                        OrderRecyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        /* Set ProgressBar In Visible */
+                        OrdersFragmentProgressBar.setVisibility(View.INVISIBLE);
+
+                        orderData.addAll(response.body().getData().getData());
+
+                        mOrderFragmentAdapter.notifyDataSetChanged();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<DonationRequests> call, Throwable t) {
+            public void onFailure(@NonNull Call<DonationRequests> call, @NonNull Throwable t) {
 
             }
         });
-
     }
 
     /**
@@ -235,16 +297,6 @@ public class OrdersFragment extends Fragment {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     BloodDatum bloodDatum = (BloodDatum) parent.getSelectedItem();
                                     blood_Type = bloodDatum.getId().toString();
-                                    //Toast.makeText(getContext(), blood_Type, Toast.LENGTH_SHORT).show();
-
-//                                    //mBloodTypeItemPosition = data.getId();
-//                                    //mBloodTypeItemPosition = orderCustomSpinnerBloodType.getSelectedItemPosition();
-//                                    CustomSpinnerItem item = (CustomSpinnerItem) parent.getSelectedItem();
-//                                    blood_Type = item.getSpinnerItemName();
-
-//                                    com.example.mm.bank.data.model.blood_type.BloodDatum item =
-//                                            (com.example.mm.bank.data.model.blood_type.BloodDatum) parent.getSelectedItem();
-//                                    blood_Type = item.getId().toString();
                                 }
 
                                 @Override
@@ -325,9 +377,15 @@ public class OrdersFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.frameLayoutSearch:
-
-                /* Get Filter Donation Requests Using API Call */
-                chickCityIdAndBloodType(citiesID, blood_Type);
+                if (blood_Type != null && citiesID != null) {
+                    /* Get Filter Donation Requests Using API Call */
+                    getDonationApiRequestsFilter(
+                            SharedPrefManager.getInstance(getContext()).getApiToken(),
+                            blood_Type,
+                            citiesID,
+                            1
+                    );
+                }
                 break;
 
             case R.id.Posts_Fragment_FAB:

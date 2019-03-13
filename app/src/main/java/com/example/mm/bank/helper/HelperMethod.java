@@ -1,6 +1,7 @@
 package com.example.mm.bank.helper;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,9 @@ import com.example.mm.bank.data.rest.RetrofitClient;
 import com.example.mm.bank.ui.activities.HomeCycleActivity;
 import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -64,9 +69,32 @@ public class HelperMethod {
                 });
     }
 
+    public void selectDate() {
+        int mYear=0;
+        int mMonth=0;
+        int mDay= 0;
+        TextView expiry = null;
 
+        final TextView finalExpiry = expiry;
+        final Context context = null;
+        DatePickerDialog dpd = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
 
+                    final Calendar myCalendar = Calendar.getInstance();
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // TODO Auto-generated method stub
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        String myFormat = "yyyy-MM-dd"; //In which you need put here
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
+                        finalExpiry.setText(sdf.format(myCalendar.getTime()));
+                    }
+                }, mYear, mMonth, mDay);
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis());
+        dpd.show();
+    }
 
     /**
      * Get Governments Using Api Call

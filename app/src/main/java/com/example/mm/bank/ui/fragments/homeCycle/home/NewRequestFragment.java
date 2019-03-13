@@ -1,6 +1,9 @@
 package com.example.mm.bank.ui.fragments.homeCycle.home;
 
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,13 +30,11 @@ import com.example.mm.bank.data.model.donation.donation_create_request.DonationC
 import com.example.mm.bank.data.model.governorates.Governorates;
 import com.example.mm.bank.data.model.governorates.GovernoratesData;
 import com.example.mm.bank.data.rest.RetrofitClient;
-import com.example.mm.bank.helper.BackPressedListener;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.utils.UserInputValidation;
-import com.example.mm.bank.ui.activities.HomeCycleActivity;
-import com.example.mm.bank.ui.activities.UserCycleActivity;
-import com.example.mm.bank.ui.custom.CustomSpinnerItem;
-import com.example.mm.bank.ui.fragments.userCycle.LoginFragment;
+import com.example.mm.bank.ui.activities.MapsActivity;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.Objects;
 
@@ -75,12 +76,17 @@ public class NewRequestFragment extends Fragment {
     TextInputLayout NewRequestFTiLNotes;
 
     //var
-    private String mBloodType = null;
-    private String mCitiesId = null;
+    private int mBloodType = 0;
+    private int mCitiesId = 0;
+
     private String mGovernment = null;
 
-    private Double latitude;
-    private Double longitude;
+    private Double mLatitude;
+    private Double mLongitude;
+
+    public NewRequestFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,10 +96,21 @@ public class NewRequestFragment extends Fragment {
         HelperMethod.onBackPressedListener(getContext(), getActivity());
     }
 
-    public NewRequestFragment() {
-        // Required empty public constructor
-    }
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onStart() {
+        super.onStart();
 
+        if (!SharedPrefManager.getInstance(getContext()).getLatitude().equals("")
+                && !SharedPrefManager.getInstance(getContext()).getLongitude().equals("")) {
+
+            mLatitude = Double.parseDouble(SharedPrefManager.getInstance(getContext()).getLatitude());
+            mLongitude = Double.parseDouble(SharedPrefManager.getInstance(getContext()).getLongitude());
+        }
+
+        SharedPrefManager.getInstance(getContext()).setLongitude("");
+        SharedPrefManager.getInstance(getContext()).setLatitude("");
+    }
 
 
     @Override
@@ -118,7 +135,7 @@ public class NewRequestFragment extends Fragment {
      * Extract Input ...>> Name & age & bagsNum &
      * hospitalName & hospitalAddress & phone & notes
      */
-    private void extractInputAndChickValidation (){
+    private void extractInputAndChickValidation(double latitude, double longitude) {
         String name = Objects.requireNonNull(NewRequestFTiLName.getEditText()).getText().toString();
         String age = Objects.requireNonNull(NewRequestFTiLAge.getEditText()).getText().toString();
         String bagsNum = Objects.requireNonNull(NewRequestFTiLNumberBags.getEditText()).getText().toString();
@@ -130,17 +147,19 @@ public class NewRequestFragment extends Fragment {
         if (!UserInputValidation.isValidName(name)) {
             NewRequestFTiLName.setError("Please Enter Correct Name..");
 
-        }else if (!UserInputValidation.isValidMobile(phone)) {
+        } else if (!UserInputValidation.isValidMobile(phone)) {
             NewRequestFTiLPhone.setError("Please Enter Correct Phone Number..");
 
-        }else {
+        } else {
             sendApiRequestCall(SharedPrefManager.getInstance(getContext()).getApiToken(), name, age,
                     mBloodType, bagsNum, hospitalName, hospitalAddress, mCitiesId, phone, notes, latitude, longitude);
+
         }
     }
 
     /**
      * Send Donation Request Using Api Call
+     *
      * @param apiToken
      * @param name
      * @param age
@@ -154,30 +173,31 @@ public class NewRequestFragment extends Fragment {
      * @param latitude
      * @param longitude
      */
-    private void sendApiRequestCall(String apiToken, String name, String age, String mBloodType, String bagsNum,
-                                    String hospitalName, String hospitalAddress, String mCitiesId, String phone,
+    private void sendApiRequestCall(String apiToken, String name, String age, int mBloodType, String bagsNum,
+                                    String hospitalName, String hospitalAddress, int mCitiesId, String phone,
                                     String notes, Double latitude, Double longitude) {
 
         Call<DonationCreateRequest> donationCreateRequestCall = RetrofitClient
                 .getInstance()
                 .getApiServices()
                 .donationRequestCreate(apiToken, name, age, mBloodType, bagsNum, hospitalName,
-                        hospitalAddress, mCitiesId, phone,notes, latitude, longitude);
+                        hospitalAddress, mCitiesId, phone, notes, latitude, longitude);
+
         donationCreateRequestCall.enqueue(new Callback<DonationCreateRequest>() {
             @Override
             public void onResponse(@NonNull Call<DonationCreateRequest> call, @NonNull Response<DonationCreateRequest> response) {
-                if (response.isSuccessful()){
-                    if (response.body().getStatus() == 1){
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus() == 1) {
                         Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
 
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<DonationCreateRequest> call, Throwable t) {
+            public void onFailure(@NonNull Call<DonationCreateRequest> call, @NonNull Throwable t) {
 
             }
         });
@@ -199,7 +219,7 @@ public class NewRequestFragment extends Fragment {
 
                 if (response.isSuccessful()) {
 
-                    if (response.body().getStatus() == 1){
+                    if (response.body().getStatus() == 1) {
                         SpinnerGovernmentsAdapter Adapter = new SpinnerGovernmentsAdapter(getContext(), response.body().getData());
                         if (NewRequestFSpinnerGovernments != null) {
                             NewRequestFSpinnerGovernments.setAdapter(Adapter);
@@ -208,7 +228,6 @@ public class NewRequestFragment extends Fragment {
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     GovernoratesData data = (GovernoratesData) parent.getSelectedItem();
                                     mGovernment = data.getName();
-                                    Toast.makeText(getContext(), mGovernment, Toast.LENGTH_SHORT).show();
                                 }
 
                                 @Override
@@ -220,6 +239,7 @@ public class NewRequestFragment extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<Governorates> call, @NonNull Throwable t) {
 
@@ -244,7 +264,7 @@ public class NewRequestFragment extends Fragment {
 
                 if (response.isSuccessful()) {
 
-                    if (response.body().getStatus() == 1){
+                    if (response.body().getStatus() == 1) {
                         CustomSpinnerAdapter Adapter = new CustomSpinnerAdapter(getContext(), response.body().getData());
                         if (NewRequestFTiLBloodType != null) {
                             NewRequestFTiLBloodType.setAdapter(Adapter);
@@ -252,8 +272,7 @@ public class NewRequestFragment extends Fragment {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     BloodDatum data = (BloodDatum) parent.getSelectedItem();
-                                    mBloodType = data.getName();
-                                    Toast.makeText(getContext(), mBloodType, Toast.LENGTH_SHORT).show();
+                                    mBloodType = data.getId();
                                 }
 
                                 @Override
@@ -265,6 +284,7 @@ public class NewRequestFragment extends Fragment {
                     }
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<BloodType> call, @NonNull Throwable t) {
 
@@ -294,8 +314,7 @@ public class NewRequestFragment extends Fragment {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                     CitiesData data = (CitiesData) parent.getSelectedItem();
-                                    mCitiesId = data.getName();
-                                    Toast.makeText(getContext(), mCitiesId, Toast.LENGTH_SHORT).show();
+                                    mCitiesId = data.getId();
 
                                 }
 
@@ -322,8 +341,49 @@ public class NewRequestFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick(R.id.Register_fragment_Sign_up_btn)
-    public void onViewClicked() {
-        extractInputAndChickValidation();
+    @OnClick({R.id.New_request_FL_Location_icon, R.id.NewRequest_fragment_send_request_btn})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.New_request_FL_Location_icon:
+                if (isServicesOK()) {
+                    Intent toMapActivity = new Intent(getContext(), MapsActivity.class);
+                    startActivity(toMapActivity);
+                }
+                break;
+
+            case R.id.NewRequest_fragment_send_request_btn:
+                if (mLongitude != null && mLatitude != null) {
+                    extractInputAndChickValidation(mLatitude, mLongitude);
+                } else {
+                    Toast.makeText(getContext(), "pleas Select Yor Location", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+
+    /**
+     * Checking Google Services Version
+     */
+    public boolean isServicesOK() {
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getActivity());
+
+        if (available == ConnectionResult.SUCCESS) {
+            /* Google Services Version is Available And User Can Make Map Request */
+            return true;
+
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
+
+            /* on Error Occured and Can Resolve it */
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(
+                    getActivity(), available, ERROR_DIALOG_REQUEST
+            );
+            dialog.show();
+
+        } else {
+            Toast.makeText(getContext(), "You Cant Mack Map Request", Toast.LENGTH_SHORT).show();
+        }
+        return false;
     }
 }

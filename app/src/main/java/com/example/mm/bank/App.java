@@ -20,6 +20,7 @@ public class App extends Application {
     public static String Lang = "en";
     Locale loc;
 
+
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
