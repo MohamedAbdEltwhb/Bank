@@ -1,9 +1,14 @@
 package com.example.mm.bank.ui.fragments.homeCycle.order;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,10 +16,6 @@ import com.example.mm.bank.R;
 import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.data.model.donation.donation_details.DonationDetails;
 import com.example.mm.bank.data.rest.RetrofitClient;
-import com.example.mm.bank.helper.BackPressedListener;
-import com.example.mm.bank.helper.HelperMethod;
-import com.example.mm.bank.ui.activities.HomeCycleActivity;
-import com.example.mm.bank.ui.fragments.homeCycle.home.HomeFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -54,11 +55,15 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
     @BindView(R.id.RequestF_Order_TV_Details_value)
     TextView RequestFOrderTVDetailsValue;
 
+    //var
     private double mLatitude;
     private double mLongitude;
     private int clintId = 0;
+
+    private String mPhoneNumper = null;
     private GoogleMap mMap;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final int REQUEST_CALL = 1;
 
     @Override
     public void onBackPressed() {
@@ -94,13 +99,15 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
                         RequestFOrderTVNumberBagsValue.setText(Objects.requireNonNull(response.body()).getData().getBagsNum());
                         RequestFOrderTVHospitalValue.setText(Objects.requireNonNull(response.body()).getData().getHospitalName());
                         RequestFOrderTVHospitalAddressValue.setText(Objects.requireNonNull(response.body()).getData().getHospitalAddress());
-                        RequestFOrderTVPhoneNumberValue.setText(Objects.requireNonNull(response.body()).getData().getPhone());
+
+                        mPhoneNumper = response.body().getData().getPhone();
+                        RequestFOrderTVPhoneNumberValue.setText(mPhoneNumper);
                         RequestFOrderTVDetailsValue.setText(Objects.requireNonNull(response.body()).getData().getNotes());
 
                         mLatitude = Double.valueOf(Objects.requireNonNull(response.body()).getData().getLatitude());
                         mLongitude = Double.valueOf(Objects.requireNonNull(response.body()).getData().getLongitude());
 
-                        if (mLatitude != 0 && mLongitude != 0){
+                        if (mLatitude != 0 && mLongitude != 0) {
                             initMap();
                         }
                     }
@@ -113,6 +120,35 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
             }
         });
     }
+
+    private void makePhoneCall() {
+        if (mPhoneNumper.trim().length() > 0) {
+
+            if (ContextCompat.checkSelfPermission(OrderRequestInformationActivity.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(OrderRequestInformationActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            } else {
+                String dial = "tel:" + mPhoneNumper;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            }
+
+        } else {
+            Toast.makeText(OrderRequestInformationActivity.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall();
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     public void initMap() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -140,12 +176,11 @@ public class OrderRequestInformationActivity extends FragmentActivity implements
             mMap.addMarker(markerOptions);
 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM));
-
-
         }
     }
 
     @OnClick(R.id.RequestF_Order_Button_call)
     public void onViewClicked() {
+        makePhoneCall();
     }
 }

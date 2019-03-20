@@ -69,6 +69,18 @@ public class HelperMethod {
                 });
     }
 
+    public static boolean checkConnection(FragmentActivity activity) {
+
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+
+        return info != null
+                && info.isConnectedOrConnecting()
+                && cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+
     public void selectDate() {
         int mYear=0;
         int mMonth=0;

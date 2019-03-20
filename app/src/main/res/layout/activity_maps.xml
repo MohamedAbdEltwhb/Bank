@@ -22,6 +22,19 @@
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toBottomOf="@+id/include" />
 
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_l"
+        map:layout_constraintBottom_toBottomOf="@+id/map"
+        map:layout_constraintEnd_toEndOf="@+id/map"
+        map:layout_constraintStart_toStartOf="@+id/map"
+        map:layout_constraintTop_toTopOf="@+id/map" />
+
     <Button
         android:id="@+id/MapActivity_Select_Location_btn"
         style="@style/AppButtonStyle"

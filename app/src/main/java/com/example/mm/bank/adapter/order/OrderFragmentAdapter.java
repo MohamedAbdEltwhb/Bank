@@ -1,7 +1,14 @@
 package com.example.mm.bank.adapter.order;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,9 +43,11 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
                         .inflate(R.layout.item_order_layout, parent, false), listener);
     }
 
+    private static final int REQUEST_CALL = 1;
+
     @Override
     public void onBindViewHolder(@NonNull OrderFragmentHolder holder, int position) {
-        Datum order = orderData.get(position);
+        final Datum order = orderData.get(position);
 
         holder.orderItemBloodTypeTV.setText(order.getBloodType().getName());
         holder.orderItemStatusNameTV.setText(order.getPatientName());
@@ -46,7 +55,31 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
         holder.orderItemCityTV.setText(order.getCity().getName());
         //order.getClientId();
 
+//        holder.orderCallButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String phoneNumber = order.getPhone();
+//
+//                if (phoneNumber.trim().length() > 0){
+//                    if (ContextCompat.checkSelfPermission(mContext,
+//                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+//
+//                        ActivityCompat.requestPermissions((Activity) mContext,
+//                                new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+//
+//                    }else {
+//                        String dial = "tel:" + phoneNumber;
+//                        mContext.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+//                    }
+//
+//                }else {
+//
+//                }
+//            }
+//        });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -54,7 +87,7 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
     }
 
 
-    class OrderFragmentHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class OrderFragmentHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView orderItemBloodTypeTV;
         private TextView orderItemStatusNameTV;
@@ -92,5 +125,7 @@ public class OrderFragmentAdapter extends RecyclerView.Adapter<OrderFragmentAdap
 //                    null,
 //                    null);
         }
+
+
     }
 }

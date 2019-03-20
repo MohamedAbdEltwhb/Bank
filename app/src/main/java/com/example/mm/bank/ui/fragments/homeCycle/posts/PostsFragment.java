@@ -2,8 +2,10 @@ package com.example.mm.bank.ui.fragments.homeCycle.posts;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.mm.bank.R;
 import com.example.mm.bank.adapter.post.OnPostClickListener;
@@ -25,6 +28,7 @@ import com.example.mm.bank.helper.BackPressedListener;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.utils.OnEndless;
 import com.example.mm.bank.ui.activities.HomeCycleActivity;
+import com.example.mm.bank.ui.custom.CustomDialog;
 import com.example.mm.bank.ui.fragments.homeCycle.home.NewRequestFragment;
 
 import java.util.ArrayList;
@@ -62,6 +66,8 @@ public class PostsFragment extends Fragment {
     //var
     private int maxPage = 0;
 
+    private ProgressDialog mProgressDialog;
+
     /**
      * Configure Back Pressed Listener Button
      */
@@ -83,10 +89,16 @@ public class PostsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onBackPressedListener();
+
+        mProgressDialog = new ProgressDialog(getContext(), R.style.MyProgressDialogStyle);
+        mProgressDialog.setMessage("Please Wait..");
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
@@ -133,8 +145,16 @@ public class PostsFragment extends Fragment {
         /* Set Adapter */
         PostsRecyclerView.setAdapter(postsAdapter);
 
-        /* Get All Posts Using API Call */
-        getApiPostsCall(SharedPrefManager.getInstance(getContext()).getApiToken(), 1);
+        /* Check Network Connection Status */
+        if(HelperMethod.checkConnection(Objects.requireNonNull(getActivity()))){
+
+            /* Get All Posts Using API Call */
+            getApiPostsCall(SharedPrefManager.getInstance(getContext()).getApiToken(), 1);
+
+        }else {
+            /* Show Dialog */
+            new CustomDialog(getContext()).showCustomDialog();
+        }
 
         return view;
     }
@@ -155,12 +175,20 @@ public class PostsFragment extends Fragment {
                 if (response.isSuccessful()) {
                     if (response.body().getStatus() == 1) {
 
+                        // to Finish the ProgressDialog
+                        mProgressDialog.dismiss();
+
                         maxPage = response.body().getData().getLastPage();
                         postsList.addAll(response.body().getData().getData());
 
                         /* Set ProgressBar In Visible */
                         PostsFragmentProgressBar.setVisibility(View.INVISIBLE);
                         postsAdapter.notifyDataSetChanged();
+                    }else {
+                        // to Finish the ProgressDialog
+                        mProgressDialog.dismiss();
+
+                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

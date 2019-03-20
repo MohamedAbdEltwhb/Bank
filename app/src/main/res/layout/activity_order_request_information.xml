@@ -224,6 +224,7 @@
 
 
             <LinearLayout
+                android:id="@+id/RequestF_Order_Button_call"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimens_xxxxl"
                 android:layout_marginBottom="@dimen/dimens_xl"
@@ -239,7 +240,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/map">
 
                 <TextView
-                    android:id="@+id/RequestF_Order_Button_call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_contact_b"

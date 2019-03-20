@@ -23,7 +23,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -82,7 +84,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mLatitude = currentLocation1.getLatitude();
                                 mLongitude = currentLocation1.getLongitude();
 
-
                                 moveCamera(
                                         new LatLng(mLatitude, mLongitude),
                                         DEFAULT_ZOOM,
@@ -102,15 +103,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom, String title) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_l);
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
-                .title(title)
-                .icon(icon);
 
-        mMap.addMarker(markerOptions);
+    private void moveCamera(LatLng latLng, float zoom, String title) {
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+//        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(R.drawable.ic_l);
+//        final MarkerOptions markerOptions = new MarkerOptions()
+//                .position(latLng)
+//                .title(title)
+//                .icon(icon);
+
+        //myMarker = mMap.addMarker(markerOptions);
+
+        //myMarker.setPosition(latLng);
+        //mMap.addMarker(markerOptions);
+
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                LatLng center = mMap.getCameraPosition().target;
+
+                mLatitude = center.latitude;
+            }
+        });
     }
 
     public void initMap() {
@@ -172,6 +187,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -199,6 +215,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 break;
 
             case R.id.MapActivity_Select_Location_btn:
+
+                Toast.makeText(MapsActivity.this, "" + mLatitude + "/" + mLongitude
+                        , Toast.LENGTH_SHORT).show();
+
                 SharedPrefManager.getInstance(this).setLatitude(mLatitude.toString());
                 SharedPrefManager.getInstance(this).setLongitude(mLongitude.toString());
 

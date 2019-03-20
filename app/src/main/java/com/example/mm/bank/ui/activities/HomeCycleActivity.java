@@ -22,6 +22,7 @@ import com.example.mm.bank.data.local.SharedPrefManager;
 import com.example.mm.bank.helper.HelperMethod;
 import com.example.mm.bank.helper.OnBackPressedListener;
 import com.example.mm.bank.helper.server.NetworkStateChangeReceiver;
+import com.example.mm.bank.ui.custom.CustomDialog;
 import com.example.mm.bank.ui.fragments.homeCycle.AboutApplicationFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.ContactWithUsFragment;
 import com.example.mm.bank.ui.fragments.homeCycle.NotificationFragment;
@@ -60,6 +61,7 @@ public class HomeCycleActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //__________________________________________________________________________________________________
 
         IntentFilter intentFilter = new IntentFilter(NetworkStateChangeReceiver.NETWORK_AVAILABLE_ACTION);
@@ -67,9 +69,16 @@ public class HomeCycleActivity extends AppCompatActivity implements
             @Override
             public void onReceive(Context context, Intent intent) {
                 boolean isNetworkAvailable = intent.getBooleanExtra(IS_NETWORK_AVAILABLE, false);
-                String networkStatus = isNetworkAvailable ? "connected" : "disconnected";
 
+                String networkStatus = isNetworkAvailable ? "connected" : "disconnected";
                 Snackbar.make(findViewById(R.id.activity_Home), "Network Status: " + networkStatus, Snackbar.LENGTH_LONG).show();
+                //new CustomDialog(HomeCycleActivity.this).showCustomDialog();
+
+//                if (isNetworkAvailable){
+//                    Snackbar.make(findViewById(R.id.activity_Home), "Network Connection is Pack ..", Snackbar.LENGTH_LONG).show();
+//                }else {
+//                    new CustomDialog(HomeCycleActivity.this).showCustomDialog();
+//                }
             }
         }, intentFilter);
 

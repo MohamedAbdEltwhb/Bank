@@ -3,6 +3,7 @@ package com.example.mm.bank.ui.fragments.homeCycle.order;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -106,6 +107,17 @@ public class OrdersFragment extends Fragment {
         super.onCreate(savedInstanceState);
         onBackPressedListener();
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == REQUEST_CALL) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                makePhoneCall();
+//            } else {
+//                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
